@@ -3,6 +3,7 @@ require "sinatra/reloader" if development?
 require 'sinatra/activerecord'
 require 'twilio-ruby'
 require 'json'
+require 'facebook/messenger'
 
 
 configure :development do
@@ -30,9 +31,18 @@ require("ibm_watson/natural_language_understanding_v1")
 
 enable :sessions
 
+
+#Facebook
+
+#talk to facebook
+get '/webhook' do
+  params['hub.challenge'] if ENV["VERIFY_TOKEN"] == params['hub.verify_token']
+end
+
 get "/" do
   401
 end
+
 
 error 401 do
   "Not allowed!!!"
@@ -93,7 +103,10 @@ puts JSON.pretty_generate(response)
 ###############????How do you break the text into two? How do you send text first, followed by GIF?
 #Freud introduce himself.
     message = "Hello curious soul, my name is Freud. I know you are one of those who seeks to deepen knowledge about yourself. Dreams have always been considered as a powerful gaze into our psyche for self-reflection and learning. I am here to help interpret and visualize your dreams.
-    Try type: 🧐 How do you do that? : 👀 Tell me more about yourself."
+    Try type:
+    🧐 How do you do that?
+    👀 Tell me more about yourself."
+
     media = "dream emoji"
 #Users:  1. How do you do that?
 #Freud: First, I would like to ask you a few questions to get to know you better. After that, you will start receiving vivid images and interpretations on your dreams. I will keep a journal of them and send you a dreamboard at the end of each month. 📜 "
@@ -105,13 +118,14 @@ puts JSON.pretty_generate(response)
 #Freud: That's an interesting perspective. How often would you like me to remind you to log your dreams, and at what time? For example, you can say "everyday at 8AM."
 #Users: "everyday at 8AM."
 #Freud: "Awesome, I will put that on my calendar. You can always update the time by typing "Update time".
-        #Now you are all set to receive images and interpretations on your dreams. See you tomorrow "
+        #Now you are all set to receive images and interpretations on your dreams."
+        #Now, start by describing your dreams. Please try to be as detailed as possible. What's in there? Who
 
   #2.Tell me more about yourself.
 
   # Freud:
   # "It comes as no surprise that dream interpretation has become a complex, sophisticated and growing resource base for us to access an abundant volume of knowledge about human subconscious experiences.
-#collect name
+
 
 #HELP
 #Freud: type "help" to get a list of questions you can ask me.
@@ -124,7 +138,7 @@ puts JSON.pretty_generate(response)
 
 
 
-  elsif body.include? "like to do" or body.include? "like doing" #when user ask what do you like to do
+  elsif body.include? "like to do" or body.include? "like doing"
     message = "I like to eat honey, and read! I'm a well-read bear. Ask me about my favorite books."
     media = "https://media.giphy.com/media/84ZzhsJZWlE3e/giphy.gif"
   elsif body.include? "quote" #"what's your favorite quote?"

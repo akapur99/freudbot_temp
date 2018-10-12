@@ -18,4 +18,8 @@ gem 'ibm_watson'
 gem 'activerecord'
 gem 'sinatra-activerecord'
 gem 'rake'
-#gem 'pg'
+gem 'pg'
+
+
+#Facebook Messenger
+gem 'facebook-messenger'
