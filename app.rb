@@ -1,5 +1,6 @@
 require 'sinatra'
 require "sinatra/reloader" if development?
+require 'sinatra/activerecord'
 require 'twilio-ruby'
 require 'json'
 
@@ -29,6 +30,13 @@ require("ibm_watson/natural_language_understanding_v1")
 
 enable :sessions
 
+get "/" do
+  401
+end
+
+error 401 do
+  "Not allowed!!!"
+end
 
 
 get "/incoming/sms" do
@@ -84,13 +92,29 @@ puts JSON.pretty_generate(response)
 
 ###############????How do you break the text into two? How do you send text first, followed by GIF?
 #Freud introduce himself.
-    message = "Hello curious soul, my name is Freud. I know you are one of those who seeks to deepen knowledge about yourself, the world and humanity. Dreams have always been considered as a powerful gaze into our psyche for self-reflection and learning. I am here to help interpret and visualize your dreams."
+    message = "Hello curious soul, my name is Freud. I know you are one of those who seeks to deepen knowledge about yourself. Dreams have always been considered as a powerful gaze into our psyche for self-reflection and learning. I am here to help interpret and visualize your dreams.
+    Try type: 🧐 How do you do that? : 👀 Tell me more about yourself."
     media = "dream emoji"
-#How do you do that?
-  #
-#Tell me more about yourself.
+#Users:  1. How do you do that?
+#Freud: First, I would like to ask you a few questions to get to know you better. After that, you will start receiving vivid images and interpretations on your dreams. I will keep a journal of them and send you a dreamboard at the end of each month. 📜 "
+#Users: Sounds good. Let's do it.
+#Freud: "Awesome! How often do you dream?
+#Users: "every night", "often", "sometimes", "rarely"
+#Freud: "Noted. What is it that you are most curious about your dreams?"
+#Users: datatype: text
+#Freud: That's an interesting perspective. How often would you like me to remind you to log your dreams, and at what time? For example, you can say "everyday at 8AM."
+#Users: "everyday at 8AM."
+#Freud: "Awesome, I will put that on my calendar. You can always update the time by typing "Update time".
+        #Now you are all set to receive images and interpretations on your dreams. See you tomorrow "
+
+  #2.Tell me more about yourself.
+
+  # Freud:
   # "It comes as no surprise that dream interpretation has become a complex, sophisticated and growing resource base for us to access an abundant volume of knowledge about human subconscious experiences.
 #collect name
+
+#HELP
+#Freud: type "help" to get a list of questions you can ask me.
 
 
 ###DATABASE NOTES
