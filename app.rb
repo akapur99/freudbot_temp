@@ -1,6 +1,8 @@
 require 'sinatra'
 require "sinatra/reloader" if development?
 require 'twilio-ruby'
+require 'json'
+
 
 configure :development do
   require 'dotenv'
@@ -9,24 +11,66 @@ end
 
 require 'twilio-ruby'
 
-#twilio number
-#9738334107
+# require 'ibm_watson'
+# #IBM ibm_watson
+# #API Key: 38Xw5RwE28WLF-vYJvQm-EAVkxZxOcpuCOeUFlMKMGhP
+# #URL: https://gateway-wdc.watsonplatform.net/natural-language-understanding/api
+# discovery = IBMWatson::DiscoveryV1.new(
+#   version: "2018-03-16",
+#   iam_apikey: "<38Xw5RwE28WLF-vYJvQm-EAVkxZxOcpuCOeUFlMKMGhP",
+#   iam_url: "https://gateway-wdc.watsonplatform.net/natural-language-understanding/api" # optional - the default value is https://iam.ng.bluemix.net/identity/token
+# )
+
+require 'ibm_watson'
+#require 'ibm_watson/natural_language_understanding_v1'
+require("ibm_watson/natural_language_understanding_v1")
+
+
 
 enable :sessions
-
-get "/" do
-	"Hello world!"
-end
-
-
-
-get "/" do
- 	     redirect '/about'
-end
 
 
 
 get "/incoming/sms" do
+
+  # If using IAM
+  natural_language_understanding = IBMWatson::NaturalLanguageUnderstandingV1.new(
+  iam_apikey: "38Xw5RwE28WLF-vYJvQm-EAVkxZxOcpuCOeUFlMKMGhP",
+  version: "2018-03-19"
+)
+
+response = natural_language_understanding.analyze(
+  text: "Bruce Banner is the Hulk and Bruce Wayne is BATMAN! " \
+        "Superman fears not Banner, but Wayne",
+  features: {
+    "entities" => {},
+    "keywords" => {}
+  }
+).result
+puts JSON.pretty_generate(response)
+
+
+#IBM
+  # natural_language_understanding = IBMWatson::NaturalLanguageUnderstandingV1.new(
+  #   iam_apikey: "38Xw5RwE28WLF-vYJvQm-EAVkxZxOcpuCOeUFlMKMGhP",
+  #   iam_url: "https://gateway-wdc.watsonplatform.net/natural-language-understanding/api",
+  #   version: "2018-03-16"
+  # )
+  #
+  # response = natural_language_understanding.analyze(
+  #   text: "some sample text",
+  #   features: {
+  #     "entities" => {},
+  #     "keywords" => {}
+  #   }
+  # ).result
+  #
+  # response[:features][:keywords]
+  # puts JSON.pretty_generate(response)
+
+#IBM
+
+
   session["last_intent"] ||= nil
 
   session["counter"] ||= 1
@@ -37,10 +81,25 @@ get "/incoming/sms" do
   body = body.downcase.strip
 
   if session["counter"] == 1
-    message = "It's Bear here 🐻. I'm a fun-loving, caring and insightful bear. Try talk to me and see what I say 😉 . Type in 'questions' to get a list of questions you can ask me."
-    media = "https://media.giphy.com/media/xNQTp4xqjY22I/giphy.gif"
-  # elsif body.include? "bear" or body.include? "hey" or body.include? "hi" or body.include? "hello"
-  #   message = "Hey you! Bear here 🐻. What do you want to know about me today? Type in 'questions' to get a list of questions you can ask me."
+
+###############????How do you break the text into two? How do you send text first, followed by GIF?
+#Freud introduce himself.
+    message = "Hello curious soul, my name is Freud. I know you are one of those who seeks to deepen knowledge about yourself, the world and humanity. Dreams have always been considered as a powerful gaze into our psyche for self-reflection and learning. I am here to help interpret and visualize your dreams."
+    media = "dream emoji"
+#How do you do that?
+  #
+#Tell me more about yourself.
+  # "It comes as no surprise that dream interpretation has become a complex, sophisticated and growing resource base for us to access an abundant volume of knowledge about human subconscious experiences.
+#collect name
+
+
+###DATABASE NOTES
+#data base - look at a history of interactions, repeated words, send a warning say, stress, ask_ it seems like you've been feeling stressed lately. - ways to destress.
+#getting to know the users - preferences (onboarding questions)
+#
+
+
+
   elsif body.include? "like to do" or body.include? "like doing" #when user ask what do you like to do
     message = "I like to eat honey, and read! I'm a well-read bear. Ask me about my favorite books."
     media = "https://media.giphy.com/media/84ZzhsJZWlE3e/giphy.gif"

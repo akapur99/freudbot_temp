@@ -9,3 +9,7 @@ gem 'dotenv-rails', :groups => [:development, :test]
 gem 'twilio-ruby', ">5.0.0"
 gem 'giphy'
 gem 'emoji'
+
+gem 'dotenv', :groups => [:development, :test]
+
+gem 'ibm_watson'
