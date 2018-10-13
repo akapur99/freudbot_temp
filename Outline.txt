@@ -1,0 +1,32 @@
+PHASE 1 - INTRODUCTION AND GETTING TO KNOW USER
+
+Freud: Hello curious soul, my name is Freud. I know you are one of those who seeks to deepen knowledge about yourself. Dreams have always been considered as a powerful gaze into our psyche for self-reflection and learning. I am here to help interpret and visualize your dreams.
+    Try type:
+      🧐 How do you do that?
+      👀 Tell me more about yourself."
+Users: How do you do that?
+Freud: First, I would like to ask you a few questions to get to know you better. After that, you will start receiving vivid images and interpretations on your dreams. I will keep a journal of them and send you a dreamboard at the end of each month. 📜 "
+Users: Sounds good. Let's do it. ????????? --- How do i make it flexible.
+Freud: "Awesome! How often do you dream?
+Users: "every night", "often", "sometimes", "rarely"
+Freud: "Noted. What is it that you are most curious about your dreams?"
+Users: datatype: text
+Freud: That's an interesting perspective. How often would you like me to remind you to log your dreams, and at what time? For example, you can say "everyday at 8AM."
+Users: "everyday at 8AM."
+Freud: "Awesome, I will put that on my calendar. You can always update the time by typing "Update time".
+
+
+PHASE 2 - LOG YOUR DREAM JOURNAL
+
+Freud: Ready start your first journal of dreams? Start by jotting down a few sentences that encapsulate your dream. Try to be as specific as possible and include elements and symbols in your dream.
+       Another tip is to identify how you were feeling in the dream. Ask yourself "was I scared, angry, remorseful, etc?"
+Users: Ok, let's get started.
+Freud: Tell me about your dream.
+Users: Describe dreams....
+.
+.
+.
+IBM NLU -> identify key words
+Freud: respond with interpretation?????????
+Freud: here are your three images --- give it "A name"
+Unsplash API.

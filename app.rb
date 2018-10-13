@@ -5,6 +5,8 @@ require 'twilio-ruby'
 require 'json'
 require 'facebook/messenger'
 
+require 'unsplash'
+
 
 configure :development do
   require 'dotenv'
@@ -24,7 +26,6 @@ require 'twilio-ruby'
 # )
 
 require 'ibm_watson'
-#require 'ibm_watson/natural_language_understanding_v1'
 require("ibm_watson/natural_language_understanding_v1")
 
 
@@ -35,9 +36,9 @@ enable :sessions
 #Facebook
 
 #talk to facebook
-get '/webhook' do
-  params['hub.challenge'] if ENV["VERIFY_TOKEN"] == params['hub.verify_token']
-end
+# get '/webhook' do
+#   params['hub.challenge'] if ENV["VERIFY_TOKEN"] == params['hub.verify_token']
+# end
 
 get "/" do
   401
@@ -49,24 +50,76 @@ error 401 do
 end
 
 
-get "/incoming/sms" do
 
-  # If using IAM
-  natural_language_understanding = IBMWatson::NaturalLanguageUnderstandingV1.new(
-  iam_apikey: "38Xw5RwE28WLF-vYJvQm-EAVkxZxOcpuCOeUFlMKMGhP",
-  version: "2018-03-19"
-)
 
-response = natural_language_understanding.analyze(
-  text: "Bruce Banner is the Hulk and Bruce Wayne is BATMAN! " \
-        "Superman fears not Banner, but Wayne",
-  features: {
-    "entities" => {},
-    "keywords" => {}
-  }
-).result
-puts JSON.pretty_generate(response)
 
+#IBM NLU API
+
+#   # If using IAM
+#   natural_language_understanding = IBMWatson::NaturalLanguageUnderstandingV1.new(
+#   iam_apikey: "38Xw5RwE28WLF-vYJvQm-EAVkxZxOcpuCOeUFlMKMGhP",
+#   version: "2018-03-19"
+# )
+#
+# response = natural_language_understanding.analyze(
+#   text: "Bruce Banner is the Hulk and Bruce Wayne is BATMAN! " \
+#         "Superman fears not Banner, but Wayne",
+#   features: {
+#     "entities" => {},
+#     "keywords" => {}
+#   }
+# ).result
+# puts JSON.pretty_generate(response)
+#
+# def search_IBM_NLU_for body
+#
+#
+#   IBM.configure do |config|
+#     config.key
+#
+#   end
+#
+#   response = natural_language_understanding.analyze(
+#
+#     puts response
+
+
+
+
+#Unsplash
+
+def search_unsplash_for response
+
+  Unsplash.configure do |config|
+    config.application_access_key = ENV['UNSPLASH_ACCESS_KEY']
+    config.application_secret = ENV['UNSPLASH_SECRET']
+    config.utm_source = "ExampleAppForClass"
+
+  end
+
+  # search for whatever search term, give 1 page of results, with 3 results per page
+  search_results = Unsplash::Photo.search( search_term, 1, 1)
+
+  puts search_results.to_json
+
+  images = ""
+
+  puts search_results.size
+
+  search_results.each do |result|
+    #puts result.to_json
+
+    puts "Result"
+
+    image_thumb = result["urls"]["thumb"]
+
+    puts result["urls"]["thumb"].to_json
+    image_description = result["description"].to_s
+    images += "<img src='#{ image_thumb.to_s }' /><br/>"
+    images += "<hr/>"
+  end
+  return images
+end
 
 #IBM
   # natural_language_understanding = IBMWatson::NaturalLanguageUnderstandingV1.new(
@@ -89,8 +142,8 @@ puts JSON.pretty_generate(response)
 #IBM
 
 
+get "/incoming/sms" do
   session["last_intent"] ||= nil
-
   session["counter"] ||= 1
   count = session["counter"]
 
@@ -99,135 +152,56 @@ puts JSON.pretty_generate(response)
   body = body.downcase.strip
 
   if session["counter"] == 1
-
 ###############????How do you break the text into two? How do you send text first, followed by GIF?
-#Freud introduce himself.
-    message = "Hello curious soul, my name is Freud. I know you are one of those who seeks to deepen knowledge about yourself. Dreams have always been considered as a powerful gaze into our psyche for self-reflection and learning. I am here to help interpret and visualize your dreams.
-    Try type:
+    message = "Hello curious soul, my name is Freud. I know you are one of those who seeks to deepen the knowledge about yourself. Dream is the small hidden door in the deepest and most intimate sanctum of our souls. I am here to help you interpret and visualize your dreams.
+    Try ask me:
     🧐 How do you do that?
     👀 Tell me more about yourself."
-
-    media = "dream emoji"
-#Users:  1. How do you do that?
-#Freud: First, I would like to ask you a few questions to get to know you better. After that, you will start receiving vivid images and interpretations on your dreams. I will keep a journal of them and send you a dreamboard at the end of each month. 📜 "
-#Users: Sounds good. Let's do it.
-#Freud: "Awesome! How often do you dream?
-#Users: "every night", "often", "sometimes", "rarely"
-#Freud: "Noted. What is it that you are most curious about your dreams?"
-#Users: datatype: text
-#Freud: That's an interesting perspective. How often would you like me to remind you to log your dreams, and at what time? For example, you can say "everyday at 8AM."
-#Users: "everyday at 8AM."
-#Freud: "Awesome, I will put that on my calendar. You can always update the time by typing "Update time".
-        #Now you are all set to receive images and interpretations on your dreams."
-        #Now, start by describing your dreams. Please try to be as detailed as possible. What's in there? Who
-
-  #2.Tell me more about yourself.
-
-  # Freud:
-  # "It comes as no surprise that dream interpretation has become a complex, sophisticated and growing resource base for us to access an abundant volume of knowledge about human subconscious experiences.
-
-
-#HELP
-#Freud: type "help" to get a list of questions you can ask me.
-
-
-###DATABASE NOTES
-#data base - look at a history of interactions, repeated words, send a warning say, stress, ask_ it seems like you've been feeling stressed lately. - ways to destress.
-#getting to know the users - preferences (onboarding questions)
-#
-
-
-
-  elsif body.include? "like to do" or body.include? "like doing"
-    message = "I like to eat honey, and read! I'm a well-read bear. Ask me about my favorite books."
-    media = "https://media.giphy.com/media/84ZzhsJZWlE3e/giphy.gif"
-  elsif body.include? "quote" #"what's your favorite quote?"
-    message = "A well-read bear is a dangerous creature.🤓"
-  elsif body.include? "questions"
-    message = "You can ask me questions such as:
-
-    \"what's your favorite quote?\"
-
-    \"what do you like the most?\"
-
-    \"what do you do for fun?\"
-
-    \"what are bear's favorite books?\"
-
-    \"what do you like to do?\"
-
-    "
-
-  elsif body.include? "favorite books"
-    message = "You just picked my favorite question! Hummm but I can only share it if you feed me with honey 🍯😎...alright alright here you go:
-
-    \"Man's Search for Meaning\"
-
-    \"Sapiens: A Brief History of Humankind\"
-
-    \"Walden\"
-
-    \"The Unbearable Lightness of Being\"
-
-    \"The Wisdom of Life\"
-
-    Try type in the title of the book and I will let you know what I think about the book!"
-    media ="https://media.giphy.com/media/126BrhLh4YgwkE/giphy.gif"
-  elsif body.include? "like the most"
-    message = "Food...and honey! "
-    media = "https://media.giphy.com/media/fdWVI1op6wi88/giphy.gif"
-  elsif body.include? "do for fun"
-    message = "Cuddle with my pillow."
-    media = "https://media.giphy.com/media/2QIbGQ1WEVF6M/giphy.gif"
-  elsif body == "man's search for meaning"
-    message = "After I read this book, which I finished many, many years ago, I had become self-critical of any future endeavours which would take up a lot of my time.I would ask myself 'is this or will this be meaningful to me?', and if the answer was 'no', I wouldn't do it. It was this book that influenced me to consciously live as meaningful a life as possible, to place a great value on the journey and not just the destination, while knowing that 'meaningful' doesn't always mean 'enjoyable', 'Meaningful' should be equated with 'fulfilling'.
-
-    🐻 Now...type another book title or just say goodbye to me."
-
-  elsif body == "sapiens: a brief history of humankind"
-    message = "I believe I am relatively familiar with history in general, and I'm usually not very excited about reading more about it. But this book was something else. Beautifully written and easy to read, this book just made me want to know more and more about how the author thinks the world evolved to what it is today. Revolution by revolution, religion by religion, conception by conception, things were simplified and yet still maintained valid points - and it was never boring.
-
-    🐻 Now...type another book title or just say goodbye to me."
-
-  elsif body == "walden"
-    message = "Thoreau makes us an apology for a healthy life away from the bustle of cities and constraints of modern society and castrating. Life as it should savor with nothing and everything around you and beyond us when we want others through profit prohibit enjoyment. Unlike many philosophers understandable for a pretentious intellectual minority, Thoreau speaks true to all of the original life that we live simply and 'naturally poetic.' An indispensable bible!
-
-    🐻 Now...type another book title or just say goodbye to me."
-
-  elsif body == "the unbearable lightness of being"
-    message = "Kundera observes the stuff that goes on internally amongst the characters; he intellectualizes it, and tells you about it. He’s quite philosophical, and you feel like the narrator is talking to you, offering very insightful observations about the characters and life in general. This is one reason why reading is often more valuable than watching TV or a movie: when reading a good book you get direct psychological explanations, and you get to go inside the heads of characters.
-
-    🐻 Now...type 'more' to learn see more of my thoughts on this book, another book title or just say goodbye to me."
-
-  elsif body == "more"
-    message = "Taken as a whole, I found this novel to be profound, but in unusual ways. It’s not a direct novel, but rather one that represents, and lets one feel, disconnections and various glimpses of perceptions. And it wasn’t a smooth novel, either. It even felt choppy on occasion. But the chapters are short, which fits its feel, and also gives you time to think about the penetrating thoughts that Kundera puts across. Kundera strikes me as a craftsman of sorts. He switches timelines deftly and effectively – even when I thought he was crazy to do so; when I thought he gave up the climax of the novel towards its middle, he proved me dead wrong. He proved to me that he knew exactly what he was doing because he’s a master of the craft. This novel is not full of sweeping, pounding paragraphs of poignant, soul-hitting, philosophical depth, but rather offers up constant glimpses; nuggets of insightful observations on almost every page, that when added up together, reveal an impressive, heartfelt, and real work. 🐻 Now...type another book title or just say goodbye to me."
-
-
-  elsif body == "the wisdom of life"
-    message = "Beginning with the assumption that one's life will be essentially painful and miserable, Schopenhauer proceeds to offer thoughts about how we can eke out a bit of pleasure for ourselves during our brief time on this earth. Underlying much of his advice is the notion one should proceed cautiously, with restraint, curbing one's desires to avoid falling into situations, social or consumptive that will only make us more miserable. Don't desire too much, he implies, let happiness rest on small simple elements.
-
-    Much of Schopenhauer's advice resonates with our modern sensibilities. Maintaining physical and mental health through exercise of body and mine is, he says, essential to happiness.
-
-    Much of the advice offered is familiar to us but the thoroughness of his insights into how one best live one's life is definitely worth reading and rereading.
-
-    🐻 Now...type another book title or just say goodbye to me."
-  elsif body.include? "bye" or body.include? "goodbye" or body.include? "ttyl" or body.include? "see you"
-    message = "Bye. Ttyl!"
-    media = "https://media.giphy.com/media/JPbZwjMcxJYic/giphy.gif"
+    media = nil
   else
-    message = "Hmmmm...I didn't understand that 🧐. Try type in 'questions' to get a list of questions you can ask me."
-end
-#
+    media = nil
+    message = determine_response(body)
+  end
 
-  #try ask what do you do everyday, selecting among giphy" "this is what i like to do" "want to see more?"
-  #'tell me a little bit more about yourself, and i will tell you more'
+#Define body
+
+ def determine_response (body)
+     body = body.downcase.strip
+
+     empty_array = []
+     greetings = ["hi","hey", "hi Freud", "hey Freud", "morning Freud", "Good morning Freud"]
+
+  if greetings.include? body #if there's words in body containing greetings??
+    return "hello!"
+  elsif body.include? "how can you help" or body.include? "how do you do" or body.include? ""
+    return "First, I would like to ask you a few questions to get to know you better.
+
+            After that, you will start receiving vivid images and interpretations on your dreams.
+
+            Your dreams will be kept securely in your personal dream collection. As your dream journal grows you can look back not just at your thoughts and feelings but spot patterns that will help you on your journey of self-discovery.
+
+            Sound good?"
+   elsif body.include? "tell me more about yourself"
+     return "....."
+   elsif body.include? "sounds good" or body.include? "let's get started"
+     return "How often do you remember your dreams? You can say 'everyday','a few times a week', 'barely', 'sometimes', etc."
+   elsif body.include? "everyday" or body.include? "few times a week" or body.include? "barely" or body.include? "rarely" or body.include? "sometimes"
+     return "Noted. People typically only remember their dreams right after they wake up. That’s why it’s important to keep a dream journal."
+
+   else
+    images = search_unsplash_for (search_IBM_for(body))#?????
+    message =
+  end
+end
+
+
 
 # Build a twilio response object
   twiml = Twilio::TwiML::MessagingResponse.new do |r|
     r.message do |m|
 
       # add the text of the response
-      m.body( message )
+      m.body(message)
 
       # add media if it is defined
       unless media.nil?
@@ -244,3 +218,7 @@ end
   content_type 'text/xml'
   twiml.to_s
  end
+
+
+# Keywords = ["blood","snake"]
+# def include_keywords body, keywords

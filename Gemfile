@@ -23,3 +23,7 @@ gem 'pg'
 
 #Facebook Messenger
 gem 'facebook-messenger'
+
+#UNSPLASH
+
+gem 'unsplash'
