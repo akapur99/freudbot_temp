@@ -200,8 +200,6 @@ Type in a number to see detailed explainations, or 'mother' to see the whole lis
    media = nil
 end
 
-
-
 # Build a twilio response object
   twiml = Twilio::TwiML::MessagingResponse.new do |r|
     r.message do |m|
