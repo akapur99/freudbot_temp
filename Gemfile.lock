@@ -70,9 +70,9 @@ GEM
       domain_name (~> 0.5)
     http-form_data (2.1.1)
     http_parser.rb (0.6.0)
-    httparty (0.16.2)
+    httparty (0.14.0)
       multi_xml (>= 0.5.2)
-    i18n (1.1.0)
+    i18n (1.1.1)
       concurrent-ruby (~> 1.0)
     ibm_watson (0.8.0)
       concurrent-ruby (~> 1.0)
@@ -95,7 +95,14 @@ GEM
     mustermann (1.0.3)
     nokogiri (1.8.5)
       mini_portile2 (~> 2.3.0)
+    oauth2 (1.4.1)
+      faraday (>= 0.8, < 0.16.0)
+      jwt (>= 1.0, < 3.0)
+      multi_json (~> 1.3)
+      multi_xml (~> 0.5)
+      rack (>= 1.2, < 3)
     oj (3.6.11)
+    pg (1.1.3)
     public_suffix (3.0.3)
     rack (2.0.5)
     rack-protection (2.0.4)
@@ -142,6 +149,9 @@ GEM
     unf (0.1.4)
       unf_ext
     unf_ext (0.0.7.5)
+    unsplash (1.5.5)
+      httparty (~> 0.14.0)
+      oauth2 (~> 1)
     websocket-driver (0.7.0)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.3)
@@ -156,12 +166,16 @@ DEPENDENCIES
   emoji
   facebook-messenger
   giphy
+  httparty
   ibm_watson
+  json
+  pg
   rake
   sinatra
   sinatra-activerecord
   sinatra-contrib
   twilio-ruby (> 5.0.0)
+  unsplash
 
 RUBY VERSION
    ruby 2.5.1p57

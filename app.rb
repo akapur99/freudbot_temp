@@ -4,8 +4,9 @@ require 'sinatra/activerecord'
 require 'twilio-ruby'
 require 'json'
 require 'facebook/messenger'
+require 'httparty'
 
-require 'unsplash'
+# require 'unsplash'
 
 
 configure :development do
@@ -195,9 +196,15 @@ get "/incoming/sms" do
 
             1. Your mother herself.
 
-            2. The feminine part of yourself.
+            2. The feminine part of yourself, the nurturing aspect of your own character.
 
-            3.
+            3. Your ideal woman.
+
+            4. Your relationship with an important female figure.
+
+            Pick a representation that you think may match up with your dream given your current real life situation.
+
+            Type in a number to see detailed explainations, or 'mother' to see the whole list.
 
             "
    media = search_unsplash_for ('mom')
