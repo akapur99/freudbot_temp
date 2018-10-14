@@ -155,26 +155,12 @@ get "/incoming/sms" do
   if session["counter"] == 1
 ###############????How do you break the text into two? How do you send text first, followed by GIF?
   message = "Hello curious soul, my name is Freud. I know you are one of those who seeks to deepen the knowledge about yourself. Dream is the small hidden door in the deepest and most intimate sanctum of our souls. I am here to help you interpret and visualize your dreams.
+
 You can ask me:
 🧐 How do you do that?
 👀 Tell me more about yourself."
-  media = nil
-  else
-  media = nil
-  message = determine_response body
-  end
-
-#Define body
-
- def determine_response body
-
-   #   empty_array = []
-   #   greetings = ["hi","hey", "hi Freud", "hey Freud", "morning Freud", "Good morning Freud"]
-   #
-   # if greetings.include? body #if there's words in body containing greetings??
-   # message = "hello!"
-   if body.include? "how can you help" or body.include? "how do you do"
-   message = "First, I would like to ask you a few questions to get to know you better.
+  elsif body.include? "how can you help" or body.include? "how do you do"
+  message = "First, I would like to ask you a few questions to get to know you better.
 
 After that, you will start receiving vivid images and interpretations on your dreams.
 
