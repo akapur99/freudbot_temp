@@ -17,14 +17,14 @@ gem 'dotenv', :groups => [:development, :test]
 gem 'ibm_watson'
 
 #Database
-gem 'activerecord'
-gem 'sinatra-activerecord'
-gem 'rake'
-gem 'pg'
+# gem 'activerecord'
+# gem 'sinatra-activerecord'
+# gem 'rake'
+# gem 'pg'
 
 
 #Facebook Messenger
-gem 'facebook-messenger'
+# gem 'facebook-messenger'
 
 #UNSPLASH
 
