@@ -154,13 +154,13 @@ get "/incoming/sms" do
   if session["counter"] == 1
 ###############????How do you break the text into two? How do you send text first, followed by GIF?
     message = "Hello curious soul, my name is Freud. I know you are one of those who seeks to deepen the knowledge about yourself. Dream is the small hidden door in the deepest and most intimate sanctum of our souls. I am here to help you interpret and visualize your dreams.
-    Try ask me:
+    You can ask me:
     🧐 How do you do that?
     👀 Tell me more about yourself."
     media = nil
   else
     media = nil
-    message = determine_response(body)
+    message = determine_response body
   end
 
 #Define body
@@ -172,9 +172,9 @@ get "/incoming/sms" do
      greetings = ["hi","hey", "hi Freud", "hey Freud", "morning Freud", "Good morning Freud"]
 
   if greetings.include? body #if there's words in body containing greetings??
-    return "hello!"
+  message = "hello!"
   elsif body.include? "how can you help" or body.include? "how do you do" or body.include? ""
-    return "First, I would like to ask you a few questions to get to know you better.
+  message = "First, I would like to ask you a few questions to get to know you better.
 
             After that, you will start receiving vivid images and interpretations on your dreams.
 
@@ -182,15 +182,28 @@ get "/incoming/sms" do
 
             Sound good?"
    elsif body.include? "tell me more about yourself"
-     return "....."
+   message = "....."
    elsif body.include? "sounds good" or body.include? "let's get started"
-     return "How often do you remember your dreams? You can say 'everyday','a few times a week', 'barely', 'sometimes', etc."
+   message = "How often do you remember your dreams? You can say 'everyday','a few times a week', 'barely', 'sometimes', etc."
    elsif body.include? "everyday" or body.include? "few times a week" or body.include? "barely" or body.include? "rarely" or body.include? "sometimes"
-     return "Noted. People typically only remember their dreams right after they wake up. That’s why it’s important to keep a dream journal."
+   message = "Noted. People typically only remember their dreams right after they wake up. That’s why it’s important to keep a dream journal.
+             Now you are all set to receive the verbal and visual interpretations of your dream. Are you ready for your first dream decoding session?"
+   elsif body.include? "yes" or body.include? "i'm ready" or body.include? "i am ready"
+   message = "Tell me about your dream last night."
+   elsif body.include? "mother" or body.include? "mom"
+   message = "A mother in your dream may represent several things:
 
+            1. Your mother herself.
+
+            2. The feminine part of yourself.
+
+            3.
+
+            "
+   media = search_unsplash_for ('mom')
    else
-    images = search_unsplash_for (search_IBM_for(body))#?????
-    message =
+    images = nil
+    message = "I don't understand you"
   end
 end
 
