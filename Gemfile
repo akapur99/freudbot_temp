@@ -14,7 +14,7 @@ gem 'json'
 
 gem 'dotenv', :groups => [:development, :test]
 
-gem 'ibm_watson'
+# gem 'ibm_watson'
 
 #Database
 # gem 'activerecord'
