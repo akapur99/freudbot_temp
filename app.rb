@@ -167,7 +167,7 @@ Sound good?"
    elsif body.include? "tell me more about yourself"
    message = "....."
    media = nil
-   elsif body.include? "sounds good" or body.include? "let's get started" or
+   elsif body.include? "sounds good" or body.include? "let's get started"
    message = "How often do you remember your dreams? You can say 'everyday','a few times a week', 'barely', 'sometimes', etc."
    media = nil
    elsif body.include? "everyday" or body.include? "few times a week" or body.include? "barely" or body.include? "rarely" or body.include? "sometimes"
@@ -196,9 +196,8 @@ Type in a number to see detailed explainations, or 'mother' to see the whole lis
    media = nil
    # media = search_unsplash_for ('mom')
    else
-   meida = nil
    message = "I don't understand you"
-   end
+   media = nil
 end
 
 
@@ -208,7 +207,7 @@ end
     r.message do |m|
 
       # add the text of the response
-      m.body(message)
+      m.body( message )
 
       # add media if it is defined
       unless media.nil?
@@ -216,7 +215,6 @@ end
       end
     end
   end
-
   # increment the session counter
   session["counter"] += 1
 
