@@ -3,7 +3,7 @@ require "sinatra/reloader" if development?
 require 'sinatra/activerecord'
 require 'twilio-ruby'
 require 'json'
-require 'facebook/messenger'
+# require 'facebook/messenger'
 require 'httparty'
 
 # require 'unsplash'
@@ -26,10 +26,6 @@ require 'twilio-ruby'
 #   iam_url: "https://gateway-wdc.watsonplatform.net/natural-language-understanding/api" # optional - the default value is https://iam.ng.bluemix.net/identity/token
 # )
 
-require 'ibm_watson'
-require("ibm_watson/natural_language_understanding_v1")
-
-
 
 enable :sessions
 
@@ -41,14 +37,14 @@ enable :sessions
 #   params['hub.challenge'] if ENV["VERIFY_TOKEN"] == params['hub.verify_token']
 # end
 
-get "/" do
-  401
-end
-
-
-error 401 do
-  "Not allowed!!!"
-end
+# get "/" do
+#   401
+# end
+#
+#
+# error 401 do
+#   "Not allowed!!!"
+# end
 
 
 
@@ -153,12 +149,12 @@ get "/incoming/sms" do
   body = body.downcase.strip
 
   if session["counter"] == 1
-###############????How do you break the text into two? How do you send text first, followed by GIF?
   message = "Hello curious soul, my name is Freud. I know you are one of those who seeks to deepen the knowledge about yourself. Dream is the small hidden door in the deepest and most intimate sanctum of our souls. I am here to help you interpret and visualize your dreams.
 
 You can ask me:
 🧐 How do you do that?
 👀 Tell me more about yourself."
+  media = nil
   elsif body.include? "how can you help" or body.include? "how do you do"
   message = "First, I would like to ask you a few questions to get to know you better.
 
@@ -167,16 +163,20 @@ After that, you will start receiving vivid images and interpretations on your dr
 Your dreams will be kept securely in your personal dream collection. As your dream journal grows you can look back not just at your thoughts and feelings but spot patterns that will help you on your journey of self-discovery.
 
 Sound good?"
-
+   media = nil
    elsif body.include? "tell me more about yourself"
    message = "....."
+   media = nil
    elsif body.include? "sounds good" or body.include? "let's get started" or
    message = "How often do you remember your dreams? You can say 'everyday','a few times a week', 'barely', 'sometimes', etc."
+   media = nil
    elsif body.include? "everyday" or body.include? "few times a week" or body.include? "barely" or body.include? "rarely" or body.include? "sometimes"
    message = "Noted. People typically only remember their dreams right after they wake up. That’s why it’s important to keep a dream journal.
              Now you are all set to receive the verbal and visual interpretations of your dream. Are you ready for your first dream decoding session?"
+   media = nil
    elsif body.include? "yes" or body.include? "i'm ready" or body.include? "i am ready"
    message = "Tell me about your dream last night."
+   media = nil
    elsif body.include? "mother" or body.include? "mom"
    message = "A mother in your dream may represent several things:
 
@@ -193,9 +193,10 @@ Pick a representation that you think may match up with your dream given your cur
 Type in a number to see detailed explainations, or 'mother' to see the whole list.
 
             "
+   media = nil
    # media = search_unsplash_for ('mom')
    else
-   images = nil
+   meida = nil
    message = "I don't understand you"
    end
 end
