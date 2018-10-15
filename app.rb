@@ -106,7 +106,8 @@ get "/incoming/sms" do
   sender = params[:From] || ""
   body = params[:Body] || ""
   body = body.downcase.strip
-
+  message = " "
+  media = nil
   if session["counter"] == 1
   message = "Hello curious soul, my name is Freud. I know you are one of those who seeks to deepen the knowledge about yourself. Dream is the small hidden door in the deepest and most intimate sanctum of our souls. I am here to help you interpret and visualize your dreams.
 
@@ -149,9 +150,10 @@ Type in a number to see detailed explainations, or type 'mother' to see the whol
    # media = search_unsplash_for ('mom')
    elsif body == "2"
    message = "As mothers offer shelter, comfort, life, guidance and protection, to see your mother in your dream also represents the nurturing aspect of your own character."
+   media = "https://unsplash.com/photos/Q1zMXEI9V8g"
    else
-   message = ""
-end
+   message = "???"
+   end
 
 # Build a twilio response object
   twiml = Twilio::TwiML::MessagingResponse.new do |r|
