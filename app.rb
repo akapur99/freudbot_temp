@@ -214,7 +214,7 @@ Type in a number to see detailed explainations, or type 'mother' to see the whol
 
     media = search_unsplash_for ("mom")
     elsif body.include? "my dream was" || "I dreamt"
-    media = search_unsplash_for (keywords[3])
+    media = search_unsplash_for (keywords[2])
     elsif body == "2"
     message = "As mothers offer shelter, comfort, life, guidance and protection, to see your mother in your dream also represents the nurturing aspect of your own character."
     media = "https://unsplash.com/photos/Q1zMXEI9V8g"
