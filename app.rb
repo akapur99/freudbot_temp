@@ -138,7 +138,7 @@ Sound good?"
     elsif body.include? "mother" or body.include? "mom"
     message = "A mother in your dream may represent several things:
 
-   1. Your mother herself.
+   1. Your mother herself. 
 
    2. The feminine part of yourself, the nurturing aspect of your own character.
 
