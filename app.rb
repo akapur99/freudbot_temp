@@ -6,6 +6,7 @@ require 'json'
 # require 'facebook/messenger'
 require 'httparty'
 require 'unsplash'
+require 'twilio-ruby'
 
 
 configure :development do
@@ -13,17 +14,6 @@ configure :development do
   Dotenv.load
 end
 
-require 'twilio-ruby'
-
-# require 'ibm_watson'
-# #IBM ibm_watson
-# #API Key: 38Xw5RwE28WLF-vYJvQm-EAVkxZxOcpuCOeUFlMKMGhP
-# #URL: https://gateway-wdc.watsonplatform.net/natural-language-understanding/api
-# discovery = IBMWatson::DiscoveryV1.new(
-#   version: "2018-03-16",
-#   iam_apikey: "<38Xw5RwE28WLF-vYJvQm-EAVkxZxOcpuCOeUFlMKMGhP",
-#   iam_url: "https://gateway-wdc.watsonplatform.net/natural-language-understanding/api" # optional - the default value is https://iam.ng.bluemix.net/identity/token
-# )
 
 
 enable :sessions
@@ -59,6 +49,76 @@ end
 error 401 do
   "Not allowed!!!"
 end
+
+#IBMWatson
+get "/test-nlp" do
+
+  text = "A hero can be anyone. Even a man doing something as simple and reassuring as
+  putting a coat around a little boy's shoulder to let him know that the world hadn't ended."
+
+  response = get_npl_for( text )
+
+  puts response.to_json
+
+  keywords = get_keywords_from_response response
+  concepts =  get_concepts_from_response response
+  entities = get_entities_from_response response
+
+  keywords.to_s + concepts.to_s
+end
+
+def get_keywords_from_response resp
+
+  return [] if resp.nil?
+
+
+  keywords = []
+
+  resp["keywords"].each do |kw|
+    keywords << kw["text"]
+  end
+
+  return keywords
+
+end
+
+
+def get_npl_for text
+
+
+  features = {
+   sentiment: {}, keywords: {}, concepts: {}, emotion: {}, entities: {}
+  }
+
+  data = {
+   "features" => features,
+   "text" => text
+  }
+  params = {  "version" => "2018-03-19"  }
+
+  headers = {
+   "Content-Type"=>"application/json"
+  }
+
+  auth = { username: "apikey", password: ENV['WATSON_API_KEY'] }
+
+  data = data.to_json if data.instance_of?(Hash)
+
+  url = ENV["WATSON_URL"]
+  method = "/v1/analyze"
+
+
+ response = HTTParty.post(
+   url + method,
+   basic_auth: auth,
+   headers: headers,
+   query: params,
+   body: data
+   )
+
+
+end
+
 
 
 #Unsplash
@@ -138,7 +198,7 @@ Sound good?"
     elsif body.include? "mother" or body.include? "mom"
     message = "A mother in your dream may represent several things:
 
-   1. Your mother herself. 
+   1. Your mother herself.
 
    2. The feminine part of yourself, the nurturing aspect of your own character.
 
@@ -151,7 +211,10 @@ Pick a representation that you think may match up with your dream given your cur
 Type in a number to see detailed explainations, or type 'mother' to see the whole list.
 
 #             "
-    media = search_unsplash_for ('mom')
+
+    media = search_unsplash_for ("mom")
+    elsif body.include? "my dream was" || "I dreamt"
+    media = search_unsplash_for (keywords[3])
     elsif body == "2"
     message = "As mothers offer shelter, comfort, life, guidance and protection, to see your mother in your dream also represents the nurturing aspect of your own character."
     media = "https://unsplash.com/photos/Q1zMXEI9V8g"
