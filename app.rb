@@ -6,7 +6,7 @@ require 'json'
 # require 'facebook/messenger'
 require 'httparty'
 
-# require 'unsplash'
+#require 'unsplash'
 
 
 configure :development do
@@ -151,8 +151,11 @@ Type in a number to see detailed explainations, or type 'mother' to see the whol
    elsif body == "2"
    message = "As mothers offer shelter, comfort, life, guidance and protection, to see your mother in your dream also represents the nurturing aspect of your own character."
    media = "https://unsplash.com/photos/Q1zMXEI9V8g"
+   elsif body == "3"
+   message = "..."
    else
    message = "???"
+   media = nil
    end
 
 # Build a twilio response object
