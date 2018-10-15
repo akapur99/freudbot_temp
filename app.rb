@@ -5,8 +5,7 @@ require 'twilio-ruby'
 require 'json'
 # require 'facebook/messenger'
 require 'httparty'
-
-#require 'unsplash'
+require 'unsplash'
 
 
 configure :development do
@@ -64,38 +63,38 @@ end
 
 #Unsplash
 
-# def search_unsplash_for response
-#
-#   Unsplash.configure do |config|
-#     config.application_access_key = ENV['UNSPLASH_ACCESS_KEY']
-#     config.application_secret = ENV['UNSPLASH_SECRET']
-#     config.utm_source = "ExampleAppForClass"
-#
-#   end
-#
-#   # search for whatever search term, give 1 page of results, with 3 results per page
-#   search_results = Unsplash::Photo.search( search_term, 1, 1)
-#
-#   puts search_results.to_json
-#
-#   images = ""
-#
-#   puts search_results.size
-#
-#   search_results.each do |result|
-#     #puts result.to_json
-#
-#     puts "Result"
-#
-#     image_thumb = result["urls"]["thumb"]
-#
-#     puts result["urls"]["thumb"].to_json
-#     image_description = result["description"].to_s
-#     images += "<img src='#{ image_thumb.to_s }' /><br/>"
-#     images += "<hr/>"
-#   end
-#   images
-# end
+def search_unsplash_for response
+
+  Unsplash.configure do |config|
+    config.application_access_key = ENV['UNSPLASH_ACCESS_KEY']
+    config.application_secret = ENV['UNSPLASH_SECRET']
+    config.utm_source = "ExampleAppForClass"
+
+  end
+
+  # search for whatever search term, give 1 page of results, with 3 results per page
+  search_results = Unsplash::Photo.search( search_term, 1, 1)
+
+  puts search_results.to_json
+
+  images = ""
+
+  puts search_results.size
+
+  search_results.each do |result|
+    #puts result.to_json
+
+    puts "Result"
+
+    image_thumb = result["urls"]["thumb"]
+
+    puts result["urls"]["thumb"].to_json
+    image_description = result["description"].to_s
+    images += "<img src='#{ image_thumb.to_s }' /><br/>"
+    images += "<hr/>"
+  end
+  images
+end
 
 
 get "/incoming/sms" do
@@ -147,7 +146,7 @@ Pick a representation that you think may match up with your dream given your cur
 Type in a number to see detailed explainations, or type 'mother' to see the whole list.
 
             "
-   # media = search_unsplash_for ('mom')
+   media = search_unsplash_for ('mom')
    elsif body == "2"
    message = "As mothers offer shelter, comfort, life, guidance and protection, to see your mother in your dream also represents the nurturing aspect of your own character."
    media = "https://unsplash.com/photos/Q1zMXEI9V8g"
