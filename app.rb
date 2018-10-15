@@ -98,6 +98,7 @@ end
 
 
 get "/incoming/sms" do
+
   session["last_intent"] ||= nil
   session["counter"] ||= 1
   count = session["counter"]
@@ -108,52 +109,55 @@ get "/incoming/sms" do
   message = " "
   media = nil
 
-  if session["counter"] == 1
-  message = "Hello curious soul, my name is Freud. I know you are one of those who seeks to deepen the knowledge about yourself. Dream is the small hidden door in the deepest and most intimate sanctum of our souls. I am here to help you interpret and visualize your dreams.
+# thank_you = ["ddd"]
+# message=thank_you.sample.to_s
+
+   if session["counter"] == 1
+   message = "Hello curious soul, my name is Freud. I know you are one of those who seeks to deepen the knowledge about yourself. Dream is the small hidden door in the deepest and most intimate sanctum of our souls. I am here to help you interpret and visualize your dreams.
 
 You can ask me:
 🧐 How do you do that?
 👀 Tell me more about yourself."
-#   elsif body.include? "how can you help" or body.include? "how do you do"
-#   message = "First, I would like to ask you a few questions to get to know you better.
-#
-# After that, you will start receiving vivid images and interpretations on your dreams.
-#
-# Your dreams will be kept securely in your personal dream collection. As your dream journal grows you can look back not just at your thoughts and feelings but spot patterns that will help you on your journey of self-discovery.
-#
-# Sound good?"
-#    elsif body.include? "tell me more about yourself"
-#    message = "....."
-#    elsif body.include? "sounds good" or body.include? "let's get started"
-#    message = "How often do you remember your dreams? You can say 'everyday','a few times a week', 'barely', 'sometimes', etc."
-#    elsif body.include? "everyday" or body.include? "few times a week" or body.include? "barely" or body.include? "rarely" or body.include? "sometimes"
-#    message = "Noted. People typically only remember their dreams right after they wake up. That’s why it’s important to keep a dream journal.
-#              Now you are all set to receive the verbal and visual interpretations of your dream. Are you ready for your first dream decoding session?"
-#    elsif body.include? "yes" or body.include? "i'm ready" or body.include? "i am ready"
-#    message = "Tell me about your dream last night."
-#    elsif body.include? "mother" or body.include? "mom"
-#    message = "A mother in your dream may represent several things:
-#
-#    1. Your mother herself.
-#
-#    2. The feminine part of yourself, the nurturing aspect of your own character.
-#
-#    3. Your ideal woman.
-#
-#    4. Your relationship with an important female figure.
-#
-# Pick a representation that you think may match up with your dream given your current real life situation.
-#
-# Type in a number to see detailed explainations, or type 'mother' to see the whole list.
-#
-# #             "
-#    media = search_unsplash_for ('mom')
-#    elsif body == "2"
-#    message = "As mothers offer shelter, comfort, life, guidance and protection, to see your mother in your dream also represents the nurturing aspect of your own character."
-#    media = "https://unsplash.com/photos/Q1zMXEI9V8g"
+   elsif body.include? "how can you help" or body.include? "how do you"
+   message = "First, I would like to ask you a few questions to get to know you better.
+
+After that, you will start receiving vivid images and interpretations on your dreams.
+
+Your dreams will be kept securely in your personal dream collection. As your dream journal grows you can look back not just at your thoughts and feelings but spot patterns that will help you on your journey of self-discovery.
+
+Sound good?"
+    elsif body.include? "tell me more about yourself"
+    message = "....."
+    elsif body.include? "sounds good" or body.include? "let's get started"
+    message = "How often do you remember your dreams? You can say 'everyday','a few times a week', 'barely', 'sometimes', etc."
+    elsif body.include? "everyday" or body.include? "few times a week" or body.include? "barely" or body.include? "rarely" or body.include? "sometimes"
+    message = "Noted. People typically only remember their dreams right after they wake up. That’s why it’s important to keep a dream journal.
+             Now you are all set to receive the verbal and visual interpretations of your dream. Are you ready for your first dream decoding session?"
+    elsif body.include? "yes" or body.include? "i'm ready" or body.include? "i am ready"
+    message = "Tell me about your dream last night."
+    elsif body.include? "mother" or body.include? "mom"
+    message = "A mother in your dream may represent several things:
+
+   1. Your mother herself.
+
+   2. The feminine part of yourself, the nurturing aspect of your own character.
+
+   3. Your ideal woman.
+
+   4. Your relationship with an important female figure.
+
+Pick a representation that you think may match up with your dream given your current real life situation.
+
+Type in a number to see detailed explainations, or type 'mother' to see the whole list.
+
+#             "
+    media = search_unsplash_for ('mom')
+    elsif body == "2"
+    message = "As mothers offer shelter, comfort, life, guidance and protection, to see your mother in your dream also represents the nurturing aspect of your own character."
+    media = "https://unsplash.com/photos/Q1zMXEI9V8g"
     elsif body == "3"
     message = "..."
-    media = search_unsplash_for ('3')
+
     else
     message = "???"
     end
