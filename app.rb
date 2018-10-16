@@ -29,70 +29,70 @@ error 401 do
 end
 
 #IBMWatson
-# get "/test-nlp" do
-#
-#   text = "A hero can be anyone. Even a man doing something as simple and reassuring as
-#   putting a coat around a little boy's shoulder to let him know that the world hadn't ended."
-#
-#   response = get_npl_for(text)
-#
-#   puts response.to_json
+get "/test-nlp" do
 
-#   keywords = get_keywords_from_response response
-#
-#   keywords.to_s
-# end
-#
-# def get_keywords_from_response resp
-#
-#   return [] if resp.nil?
-#
-#
-#   keywords = []
-#
-#   resp["keywords"].each do |kw|
-#     keywords << kw["text"]
-#   end
-#
-#   return keywords
-#
-# end
-#
-#
-# def get_npl_for text
-#
-#
-#   features = {
-#    sentiment: {}, keywords: {}, concepts: {}, emotion: {}, entities: {}
-#   }
-#
-#   data = {
-#    "features" => features,
-#    "text" => text
-#   }
-#   params = {  "version" => "2018-03-19"  }
-#
-#   headers = {
-#    "Content-Type"=>"application/json"
-#   }
-#
-#   auth = { username: "apikey", password: ENV['WATSON_API_KEY'] }
-#
-#   data = data.to_json if data.instance_of?(Hash)
-#
-#   url = ENV["WATSON_URL"]
-#   method = "/v1/analyze"
-#
-#
-#  response = HTTParty.post(
-#    url + method,
-#    basic_auth: auth,
-#    headers: headers,
-#    query: params,
-#    body: data
-#    )
-#
-# end
+  text = "A hero can be anyone. Even a man doing something as simple and reassuring as
+  putting a coat around a little boy's shoulder to let him know that the world hadn't ended."
+
+  response = get_npl_for(text)
+
+  puts response.to_json
+
+  keywords = get_keywords_from_response response
+
+  keywords.to_s
+end
+
+def get_keywords_from_response resp
+
+  return [] if resp.nil?
+
+
+  keywords = []
+
+  resp["keywords"].each do |kw|
+    keywords << kw["text"]
+  end
+
+  return keywords
+
+end
+
+
+def get_npl_for text
+
+
+  features = {
+   sentiment: {}, keywords: {}, concepts: {}, emotion: {}, entities: {}
+  }
+
+  data = {
+   "features" => features,
+   "text" => text
+  }
+  params = {  "version" => "2018-03-19"  }
+
+  headers = {
+   "Content-Type"=>"application/json"
+  }
+
+  auth = { username: "apikey", password: ENV['WATSON_API_KEY'] }
+
+  data = data.to_json if data.instance_of?(Hash)
+
+  url = ENV["WATSON_URL"]
+  method = "/v1/analyze"
+
+
+ response = HTTParty.post(
+   url + method,
+   basic_auth: auth,
+   headers: headers,
+   query: params,
+   body: data
+   )
+
+end
 
 
 
@@ -127,6 +127,8 @@ def search_unsplash_for response
     image_description = result["description"].to_s
     images += "<img src='#{ image_thumb.to_s }' /><br/>"
     images += "<hr/>"
+
+    return image_thumb.to_s
   end
   images
 end
@@ -135,7 +137,7 @@ end
 #   "Hello World"
 # end
 
-greetings = ["<h1>Hello ", "<h1>Hey ","<h1>Hi "]
+greetings = ["Hello ", "Hey ","Hi "]
 goodbye = ["<h1>Great. Happy dreaming! I will talk to you later.", "<h1>Awesome, hope it's helpful. Have a great day!"]
 
 
@@ -155,17 +157,13 @@ get "/incoming/sms" do
 #==============================ONBOARDING======================================#
    if session["counter"] == 1
    message = "Hello curious soul, my name is Freud. What's your name?"
-   # elsif body.include?"hi"
-   # # session[:name]= body
-   # message = "What's your name?"
    elsif body.include? "jo"
-   # /or body.include? "I'm" or body.include? "I am"
    session[:name]= body
    message = greetings.sample.to_s + session[:name] + ". I know you are one of those who seeks to deepen the knowledge about yourself.
-   <br />
-   Dream is the small hidden door in the deepest and most intimate sanctum of our souls. I am here to help you interpret and visualize your dreams.
-   <br />
-   How do I do that? Enter 🧐 to find out more. "
+
+Dream is the small hidden door in the deepest and most intimate sanctum of our souls. I am here to help you interpret and visualize your dreams.
+
+How do I do that? Enter 🧐 to find out more. "
    # message.split('<br />')
 
 #======================FUTURE GREETINGS DOES NOT WORK!!!=======================#
@@ -193,7 +191,7 @@ get "/incoming/sms" do
    elsif body.include? "water"
    message = "A large body of water is a symbol in your dream. Is that correct?"
    elsif body.include? "that's correct"
-   message = ["Great, let's get started with interpretation of your dream.Water represents...........","Here is a visual representation of your dream: "]
+   message = ["Great, let's get started with interpretation of your dream. Water represents your subconscious thoughts and emotions.","This is a visual representation of your dream."]
    media = [nil,"https://images.unsplash.com/photo-1505142468610-359e7d316be0?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=689dc19dacb860a85a79530515114632&auto=format&fit=crop&w=562&q=80"]
    elsif body.include? "not correct"
    message = "Sorry, let’s try again. I identified that you mentioned" + "sea" + "and" + "beach" + "as key symbols in your dream, type in a symbol to see its interpretation."
@@ -207,19 +205,27 @@ get "/incoming/sms" do
    message = goodbye.sample.to_s
 
 #----------------API--------------#
-    # elsif body.include? "I dreamt of" or body.include? "In my dream"
-    # message = IBM + " is a symbol in your dream. Is that correct?"
-    # elsif body == "Yes, that's correct."
-    # message = "Great, let's get started with interpretation of your dream.
-    # <br />
-    # Water represents...........
-    # <br />
-    # Here is a visual representation of your dream"
-    # media = search_unsplash_for ("IBM")
-    # elsif body == "Cool. Thank you Freud."
-    # message = "You are very welcome. I have saved logged this dream in " + session["name"] + "’s dream journal. You can always type “search: symbol” to read your past dreams related to this symbol. Is there anything else I can help you with today?"
-    # elsif body == "Nope, that's it."
-    # message = goodbye.sample.to_s
+   # elsif body.include? "i dreamt of" or body.include? "in my dream"
+   #
+   #    response = get_npl_for( body )
+   #
+   #    keywords = get_keywords_from_response( response )
+   #
+   #    image = search_unsplash_for( keywords.join( ", ") )
+   #    media = image
+   #    message = " is a symbol in your dream. Is that correct?"
+   #
+   #  elsif body == "Yes, that's correct."
+   #  message = "Great, let's get started with interpretation of your dream.
+   #  <br />
+   #  Water represents...........
+   #  <br />
+   #  Here is a visual representation of your dream"
+   #  media = search_unsplash_for ("IBM")
+   #  elsif body == "Cool. Thank you Freud."
+   #  message = "You are very welcome. I have saved logged this dream in " + session["name"] + "’s dream journal. You can always type “search: symbol” to read your past dreams related to this symbol. Is there anything else I can help you with today?"
+   #  elsif body == "Nope, that's it."
+   #  message = goodbye.sample.to_s
 
 
 #-------------------------------HOUSEKEEPING-----------------------------------#
