@@ -150,10 +150,8 @@ get "/incoming/sms" do
   body = body.downcase.strip
   message = " "
   media = nil
-
 # thank_you = ["ddd"]
 # message=thank_you.sample.to_s
-
 #==============================ONBOARDING======================================#
    if session["counter"] == 1
    message = "Hello curious soul, my name is Freud. What's your name?"
@@ -168,7 +166,7 @@ get "/incoming/sms" do
    Dream is the small hidden door in the deepest and most intimate sanctum of our souls. I am here to help you interpret and visualize your dreams.
    <br />
    How do I do that? Enter 🧐 to find out more. "
-   message.split('<br />')
+   # message.split('<br />')
 
 #======================FUTURE GREETINGS DOES NOT WORK!!!=======================#
    # elsif body.nil?
@@ -195,21 +193,16 @@ get "/incoming/sms" do
    elsif body.include? "water"
    message = "A large body of water is a symbol in your dream. Is that correct?"
    elsif body.include? "that's correct"
-   message = "Great, let's get started with interpretation of your dream.
-   <br />
-   Water represents...........
-   <br />
-   Here is a visual representation of your dream: "
-   media = "https://unsplash.com/photos/sLAk1guBG90"
+   message = ["Great, let's get started with interpretation of your dream.Water represents...........","Here is a visual representation of your dream: "]
+   media = [nil,"https://unsplash.com/photos/sLAk1guBG90"]
    elsif body.include? "not correct"
-   message = "Sorry, let’s try again. I identified that you mentioned" + "XXX, " + "XXX" + "as key symbols in your dream, type in a symbol to see its interpretation."
-   elsif body == "XXX"
+   message = "Sorry, let’s try again. I identified that you mentioned" + "sea" + "and" + "beach" + "as key symbols in your dream, type in a symbol to see its interpretation."
+   elsif body == "large body of water"
    session[:symbol]= body
-   message = "Great, let's get started with interpretation of your dream." + "represents/.........." +
-   "Here is a visual representation of your dream"
-   media = "https://unsplash.com/photos/sLAk1guBG90"
+   message = ["Great, let's get started with interpretation of your dream." + session[:symbol] + "represents/..........", "Here is a visual representation of your dream"]
+   media = [nil,"https://unsplash.com/photos/sLAk1guBG90"]
    elsif body.include? "thank you"
-   message = "You are very welcome. I have saved logged this dream in " + session[:name] + "’s dream journal. You can always type “search: symbol” to read your past dreams related to this symbol. Is there anything else I can help you with today?"
+   message = ["You are very welcome. I have saved logged this dream in " + session[:name] + "’s dream journal.", "You can always type “search: symbol” to read your past dreams related to this symbol. Is there anything else I can help you with today?"]
    elsif body.include? "that's it"
    message = goodbye.sample.to_s
 
@@ -252,6 +245,7 @@ get "/incoming/sms" do
 
 
 # Build a twilio response object
+  if message.class==String
   twiml = Twilio::TwiML::MessagingResponse.new do |r|
     r.message do |m|
 
@@ -267,9 +261,35 @@ get "/incoming/sms" do
   # increment the session counter
   session["counter"] += 1
 
+  # send a response to twilio
+  content_type 'text/xml'
+  twiml.to_s
+  end
+
+
+  if message.class==Array
+    for i in message.size
+  twiml = Twilio::TwiML::MessagingResponse.new do |r|
+    r.message do |m|
+
+      # add the text of the response
+      m.body(message[i])
+
+      # add media if it is defined
+      unless media.nil?
+        m.media(media[i])
+      end
+    end
+  end
+  # increment the session counter
+  session["counter"] += 1
+
 
 
   # send a response to twilio
   content_type 'text/xml'
   twiml.to_s
+  end
+  end
+
  end
