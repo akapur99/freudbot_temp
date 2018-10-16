@@ -274,9 +274,9 @@ get "/incoming/sms" do
       # add the text of the response
       m.body(message[i])
       # add media if it is defined
-      unless media.nil?
-        m.media(media[i])
-      end
+      # unless media.nil?
+      #   m.media(media[i])
+      # end
     end
   end
   # increment the session counter
