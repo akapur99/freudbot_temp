@@ -243,7 +243,7 @@ get "/incoming/sms" do
     message = "Sorry I didn't recognize that. Type 'menu' to get a list of options."
     end
 
-
+#Test
 # Build a twilio response object
   if message.class==String
   twiml = Twilio::TwiML::MessagingResponse.new do |r|
