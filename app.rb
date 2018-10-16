@@ -194,7 +194,7 @@ get "/incoming/sms" do
    message = "A large body of water is a symbol in your dream. Is that correct?"
    elsif body.include? "that's correct"
    message = ["Great, let's get started with interpretation of your dream.Water represents...........","Here is a visual representation of your dream: "]
-   media = [nil,"https://unsplash.com/photos/sLAk1guBG90"]
+   media = [nil,"https://images.unsplash.com/photo-1505142468610-359e7d316be0?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=689dc19dacb860a85a79530515114632&auto=format&fit=crop&w=562&q=80"]
    elsif body.include? "not correct"
    message = "Sorry, let’s try again. I identified that you mentioned" + "sea" + "and" + "beach" + "as key symbols in your dream, type in a symbol to see its interpretation."
    elsif body == "large body of water"
@@ -246,7 +246,7 @@ get "/incoming/sms" do
 #Test
 # Build a twilio response object
   if message.class==String
-  twiml = Twilio::TwiML::MessagingResponse.new do |r|
+    twiml = Twilio::TwiML::MessagingResponse.new do |r|
     r.message do |m|
 
       # add the text of the response
@@ -268,15 +268,15 @@ get "/incoming/sms" do
 
   if message.class==Array
     twiml = Twilio::TwiML::MessagingResponse.new do |r|
-    r.message do |m|
     message.each_with_index do |element,i|
+      r.message do |m|
       puts i
       # add the text of the response
       m.body(message[i])
       # add media if it is defined
-      # unless media.nil?
-      #   m.media(media[i])
-      # end
+      unless media.nil?
+        m.media(media[i])
+      end
     end
   end
   # increment the session counter
