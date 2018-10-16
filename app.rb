@@ -166,6 +166,7 @@ get "/incoming/sms" do
    Dream is the small hidden door in the deepest and most intimate sanctum of our souls. I am here to help you interpret and visualize your dreams.
    <br />
    How do I do that? Enter 🧐 to find out more. "
+     puts message
    # message.split('<br />')
 
 #======================FUTURE GREETINGS DOES NOT WORK!!!=======================#
@@ -245,6 +246,7 @@ get "/incoming/sms" do
 
 #Test
 # Build a twilio response object
+  puts message
   if message.class==String
   twiml = Twilio::TwiML::MessagingResponse.new do |r|
     r.message do |m|
