@@ -18,28 +18,6 @@ end
 
 enable :sessions
 
-post "/signup" do
-  client = Twilio::REST::Client.new ENV["TWILIO_ACCOUNT_SID"], ENV["TWILIO_AUTH_TOKEN"]
-
-  # Include a message here
-  message = "Hi" + params[:first_name] + ", welcome to BotName! I can respond to who, what, where, when and why. If you're stuck, type help."
-
-  # this will send a message from any end point
-  client.api.account.messages.create(
-    from: ENV["TWILIO_FROM"],
-    to: params[:number],
-    body: message
-  )
-	# response if eveything is OK
-	"You're signed up. You'll receive a text message in a few minutes from the bot. "
-end
-
-#Facebook
-
-#talk to facebook
-# get '/webhook' do
-#   params['hub.challenge'] if ENV["VERIFY_TOKEN"] == params['hub.verify_token']
-# end
 
 get "/" do
   401
@@ -153,91 +131,125 @@ def search_unsplash_for response
   images
 end
 
-get '/incoming/sms' do
-  "Hello World"
-end
+# get '/incoming/sms' do
+#   "Hello World"
+# end
 
-# get "/incoming/sms" do
-#
-#   session["last_intent"] ||= nil
-#   session["counter"] ||= 1
-#   count = session["counter"]
-#
-#   sender = params[:From] || ""
-#   body = params[:Body] || ""
-#   body = body.downcase.strip
-#   message = " "
-#   media = nil
-#
-# # thank_you = ["ddd"]
-# # message=thank_you.sample.to_s
-#
-#    if session["counter"] == 1
-#    message = "Hello curious soul, my name is Freud. I know you are one of those who seeks to deepen the knowledge about yourself.
-#    <br />
-#    Dream is the small hidden door in the deepest and most intimate sanctum of our souls. I am here to help you interpret and visualize your dreams.
-#    <br />
-#    How do I do that? Enter 🧐 to find out more. "
-#    message.split('<br />')
+greetings = ["<h1>Hello ", "<h1>Hey ","<h1>Hi "]
+goodbye = ["<h1>Great. Happy dreaming! I will talk to you later.", "<h1>Awesome, hope it's helpful. Have a great day!"]
 
 
-# #future encouters greeting.
-#    # elsif body.nil?
-#    # message = "👋 Hi welcome back! What did you dream of last night?"
-#
-#
-#    elsif body == "🧐"
-#    message = "Right after you wake up every morning, I will remind you to log your dreams with me. I will analyze your dream and send you visual and verbal representations of major symbols in your dreams.
-#    <br />
-#    Your dreams will be kept securely in your personal dream collection. As your dream journal grows you can look back not just at your thoughts and feelings but spot patterns that will help you on your journey of self-discovery.
-#    <br />
-#    Ready for your first dream interpretation? Type 👍 to begin; or “menu” to get a list of things you can do. "
-#    elsif body == 👍
-#    message = "Tell me about your dream last night. Try to be as specific as possible. Since we cannot act on our unconscious desires in our waking life, we can explore these feelings in dreams. However, we tend to do this in hidden, symbolic forms. So try to share main symbols appeared in your dream. For example: “my mother”, “dark night”, etc. "
-#    elsif body == "menu"
-#    message = "To start logging and analyzing your dream, type “I dreamt” followed by your dreams.
-#    <br />
-#    📖 To search a particular dream from your dream journal. Enter “search: + keywords”. (e.x: search: mother)
-#    <br />
-#    To learn more about about. enter “Freud”
-#    <br />
-#    To learn common dreams and what supposedly mean, enter “common”
-#    <br />
-#    To hear interesting facts about dreams, enter “facts"
-#
-#    elsif body.include? "mother" or body.include? "mom"
-#    message = "A mother in your dream may represent several things:
-#
-#    1. Your mother herself.
-#
-#    2. The feminine part of yourself, the nurturing aspect of your own character.
-#
-#    3. Your ideal woman.
-#
-#    4. Your relationship with an important female figure.
-#    <br />
-#    Pick a representation that you think may match up with your dream given your current real life situation.
-#    <br />
-#    Type in a number to see detailed explainations, or type 'mother' to see the whole list."
-#
-#    media = search_unsplash_for ("mom")
-#    elsif body.include? "my dream was" or body.include? "I dreamt"
-#    media = get_keywords_from_response get_npl_for(text)
-#    elsif body == "2"
-#    message = "As mothers offer shelter, comfort, life, guidance and protection, to see your mother in your dream also represents the nurturing aspect of your own character."
-#    media = "https://unsplash.com/photos/Q1zMXEI9V8g"
-#    elsif body == "3"
-#    message = "..."
-#    elsif body == "facts"
-#    array_of_lines = IO.readlines("facts.txt")
-#    message = array_of_lines.sample.to_s
-#    elsif body == "common"
-#    array_of_lines = IO.readlines("common.txt")
-#    message = array_of_lines.sample.to_s
-#    else
-#    message = "Sorry I didn't recognize that. Type 'menu' to get a list of options."
-#    end
-#  end
+get "/incoming/sms" do
+
+  session["last_intent"] ||= nil
+  session["counter"] ||= 1
+  count = session["counter"]
+
+  sender = params[:From] || ""
+  body = params[:Body] || ""
+  body = body.downcase.strip
+  message = " "
+  media = nil
+
+# thank_you = ["ddd"]
+# message=thank_you.sample.to_s
+
+#==============================ONBOARDING======================================#
+   if session["counter"] == 1
+   message = "Hello curious soul, my name is Freud. What's your name?"
+   # elsif body.include?"hi"
+   # # session[:name]= body
+   # message = "What's your name?"
+   elsif body.include? "jo"
+   # /or body.include? "I'm" or body.include? "I am"
+   session[:name]= body
+   message = greetings.sample.to_s + session[:name] + ". I know you are one of those who seeks to deepen the knowledge about yourself.
+   <br />
+   Dream is the small hidden door in the deepest and most intimate sanctum of our souls. I am here to help you interpret and visualize your dreams.
+   <br />
+   How do I do that? Enter 🧐 to find out more. "
+   message.split('<br />')
+
+#======================FUTURE GREETINGS DOES NOT WORK!!!=======================#
+   # elsif body.nil?
+   # message = "👋 Hi welcome back! What did you dream of last night?"
+
+
+   elsif body == "🧐"
+   message = "Right after you wake up every morning, I will remind you to log your dreams with me. I will analyze your dream and send you visual and verbal representations of major symbols in your dreams.
+   <br />
+   Your dreams will be kept securely in your personal dream collection. As your dream journal grows you can look back not just at your thoughts and feelings but spot patterns that will help you on your journey of self-discovery.
+   <br />
+   Ready for your first dream interpretation? Type 👍 to begin; or “menu” to get a list of things you can do. "
+   message.split('<br />')
+
+   elsif body == '👍'
+   message = "Tell me about your dream last night. Try to be as specific as possible.
+   <br />
+   Since we cannot act on our unconscious desires in our waking life, we can explore these feelings in dreams. However, we tend to do this in hidden, symbolic forms.
+   <br />
+   Try sharing main symbols appeared in your dream. For example: “my mother”, “dark night”, etc. "
+
+#===============================DREAM ANALYZING================================#
+#----------------demo--------------#
+   elsif body.include? "water"
+   message = "A large body of water is a symbol in your dream. Is that correct?"
+   elsif body.include? "that's correct"
+   message = "Great, let's get started with interpretation of your dream.
+   <br />
+   Water represents...........
+   <br />
+   Here is a visual representation of your dream: "
+   media = "https://unsplash.com/photos/sLAk1guBG90"
+   elsif body.include? "not correct"
+   message = "Sorry, let’s try again. I identified that you mentioned" + "XXX, " + "XXX" + "as key symbols in your dream, type in a symbol to see its interpretation."
+   elsif body == "XXX"
+   session[:symbol]= body
+   message = "Great, let's get started with interpretation of your dream." + "represents/.........." +
+   "Here is a visual representation of your dream"
+   media = "https://unsplash.com/photos/sLAk1guBG90"
+   elsif body.include? "thank you"
+   message = "You are very welcome. I have saved logged this dream in " + session[:name] + "’s dream journal. You can always type “search: symbol” to read your past dreams related to this symbol. Is there anything else I can help you with today?"
+   elsif body.include? "that's it"
+   message = goodbye.sample.to_s
+
+#----------------API--------------#
+    # elsif body.include? "I dreamt of" or body.include? "In my dream"
+    # message = IBM + " is a symbol in your dream. Is that correct?"
+    # elsif body == "Yes, that's correct."
+    # message = "Great, let's get started with interpretation of your dream.
+    # <br />
+    # Water represents...........
+    # <br />
+    # Here is a visual representation of your dream"
+    # media = search_unsplash_for ("IBM")
+    # elsif body == "Cool. Thank you Freud."
+    # message = "You are very welcome. I have saved logged this dream in " + session["name"] + "’s dream journal. You can always type “search: symbol” to read your past dreams related to this symbol. Is there anything else I can help you with today?"
+    # elsif body == "Nope, that's it."
+    # message = goodbye.sample.to_s
+
+
+#-------------------------------HOUSEKEEPING-----------------------------------#
+    elsif body == "menu"
+    message = "To start logging and analyzing your dream, type “I dreamt” followed by your dreams.
+    <br />
+    📖 To search a particular dream from your dream journal. Enter “search: + keywords”. (e.x: search: mother)
+    <br />
+    To learn more about about. enter “Freud”
+    <br />
+    To learn common dreams and what supposedly mean, enter “common”
+    <br />
+    To hear interesting facts about dreams, enter “facts"
+    elsif body == "facts"
+    array_of_lines = IO.readlines("facts.txt")
+    message = array_of_lines.sample.to_s
+    elsif body == "common"
+    array_of_lines = IO.readlines("common.txt")
+    message = array_of_lines.sample.to_s
+    else
+    message = "Sorry I didn't recognize that. Type 'menu' to get a list of options."
+    end
+
 
 # Build a twilio response object
   twiml = Twilio::TwiML::MessagingResponse.new do |r|
