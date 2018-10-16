@@ -166,7 +166,6 @@ get "/incoming/sms" do
    Dream is the small hidden door in the deepest and most intimate sanctum of our souls. I am here to help you interpret and visualize your dreams.
    <br />
    How do I do that? Enter 🧐 to find out more. "
-     puts message
    # message.split('<br />')
 
 #======================FUTURE GREETINGS DOES NOT WORK!!!=======================#
@@ -246,14 +245,12 @@ get "/incoming/sms" do
 
 #Test
 # Build a twilio response object
-  puts message
   if message.class==String
   twiml = Twilio::TwiML::MessagingResponse.new do |r|
     r.message do |m|
 
       # add the text of the response
       m.body(message)
-
       # add media if it is defined
       unless media.nil?
         m.media(media)
@@ -262,10 +259,10 @@ get "/incoming/sms" do
   end
   # increment the session counter
   session["counter"] += 1
-
   # send a response to twilio
   content_type 'text/xml'
-  twiml.to_s
+  puts twiml.to_s
+  return twiml.to_s
   end
 
 
@@ -290,7 +287,7 @@ get "/incoming/sms" do
 
   # send a response to twilio
   content_type 'text/xml'
-  twiml.to_s
+  return twiml.to_s
   end
   end
 
