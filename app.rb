@@ -159,7 +159,7 @@ get "/incoming/sms" do
    message = "Hello curious soul, my name is Freud. What's your name?"
    elsif body.include? "jo"
    session[:name]= body
-   message = greetings.sample.to_s + session[:name] + ". I know you are one of those who seeks to deepen the knowledge about yourself.
+   message = greetings.sample.to_s + session[:name].capitalize + ". I know you are one of those who seeks to deepen the knowledge about yourself.
 
 Dream is the small hidden door in the deepest and most intimate sanctum of our souls. I am here to help you interpret and visualize your dreams.
 
@@ -173,72 +173,75 @@ How do I do that? Enter 🧐 to find out more. "
 
    elsif body == "🧐"
    message = "Right after you wake up every morning, I will remind you to log your dreams with me. I will analyze your dream and send you visual and verbal representations of major symbols in your dreams.
-   <br />
-   Your dreams will be kept securely in your personal dream collection. As your dream journal grows you can look back not just at your thoughts and feelings but spot patterns that will help you on your journey of self-discovery.
-   <br />
-   Ready for your first dream interpretation? Type 👍 to begin; or “menu” to get a list of things you can do. "
-   message.split('<br />')
+
+Your dreams will be kept securely in your personal dream collection. As your dream journal grows you can look back not just at your thoughts and feelings but spot patterns that will help you on your journey of self-discovery.
+
+Ready for your first dream interpretation? Type 👍 to begin; or “menu” to get a list of things you can do. "
 
    elsif body == '👍'
    message = "Tell me about your dream last night. Try to be as specific as possible.
-   <br />
-   Since we cannot act on our unconscious desires in our waking life, we can explore these feelings in dreams. However, we tend to do this in hidden, symbolic forms.
-   <br />
-   Try sharing main symbols appeared in your dream. For example: “my mother”, “dark night”, etc. "
+
+Since we cannot act on our unconscious desires in our waking life, we can explore these feelings in dreams. However, we tend to do this in hidden, symbolic forms.
+
+Try sharing main symbols appeared in your dream. For example: “my mother”, “dark night”, etc. "
 
 #===============================DREAM ANALYZING================================#
 #----------------demo--------------#
    elsif body.include? "water"
    message = "A large body of water is a symbol in your dream. Is that correct?"
    elsif body.include? "that's correct"
-   message = ["Great, let's get started with interpretation of your dream. Water represents your subconscious thoughts and emotions.","This is a visual representation of your dream."]
-   media = [nil,"https://images.unsplash.com/photo-1505142468610-359e7d316be0?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=689dc19dacb860a85a79530515114632&auto=format&fit=crop&w=562&q=80"]
+   message = "Great, let's get started with interpretation of your dream. Water represents your subconscious thoughts and emotions. Type 'image' to visualize your dream."
+   elsif body == "image"
+   message = "Here is the visual representation of your dream:"
+   media = "https://images.unsplash.com/photo-1505142468610-359e7d316be0?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=689dc19dacb860a85a79530515114632&auto=format&fit=crop&w=562&q=80"
    elsif body.include? "not correct"
    message = "Sorry, let’s try again. I identified that you mentioned" + "sea" + "and" + "beach" + "as key symbols in your dream, type in a symbol to see its interpretation."
    elsif body == "large body of water"
    session[:symbol]= body
-   message = ["Great, let's get started with interpretation of your dream." + session[:symbol] + "represents/..........", "Here is a visual representation of your dream"]
-   media = [nil,"https://unsplash.com/photos/sLAk1guBG90"]
+   message = "Great, let's get started with interpretation of your dream." + session[:symbol] + "represents/.........." + "Here is a visual representation of your dream"
+   media = "https://unsplash.com/photos/sLAk1guBG90"
    elsif body.include? "thank you"
-   message = ["You are very welcome. I have saved logged this dream in " + session[:name] + "’s dream journal.", "You can always type “search: symbol” to read your past dreams related to this symbol. Is there anything else I can help you with today?"]
+   message = "You are very welcome. I have saved logged this dream in " + session[:name] + "’s dream journal.
+
+   You can always type “search: symbol” to read your past dreams related to this symbol. Is there anything else I can help you with today?"
    elsif body.include? "that's it"
    message = goodbye.sample.to_s
 
 #----------------API--------------#
-   # elsif body.include? "i dreamt of" or body.include? "in my dream"
-   #
-   #    response = get_npl_for( body )
-   #
-   #    keywords = get_keywords_from_response( response )
-   #
-   #    image = search_unsplash_for( keywords.join( ", ") )
-   #    media = image
-   #    message = " is a symbol in your dream. Is that correct?"
-   #
-   #  elsif body == "Yes, that's correct."
-   #  message = "Great, let's get started with interpretation of your dream.
-   #  <br />
-   #  Water represents...........
-   #  <br />
-   #  Here is a visual representation of your dream"
-   #  media = search_unsplash_for ("IBM")
-   #  elsif body == "Cool. Thank you Freud."
-   #  message = "You are very welcome. I have saved logged this dream in " + session["name"] + "’s dream journal. You can always type “search: symbol” to read your past dreams related to this symbol. Is there anything else I can help you with today?"
-   #  elsif body == "Nope, that's it."
-   #  message = goodbye.sample.to_s
+   elsif body.include? "i dreamt of" or body.include? "in my dream"
+
+      response = get_npl_for( body )
+
+      keywords = get_keywords_from_response( response )
+      puts keywords
+      image = search_unsplash_for( keywords.join( ", ") )
+      media = image
+      message = keywords[0].capitalize + " is a symbol in your dream. Here is an image to visualize it."
+
+    # elsif body == "yep"
+    # # message = "Great, let's get started with interpretation of your dream." + keywords[0].capitalize + "represents..... Type 'image' to visualize your dream."
+    # # elsif body == "image"
+    # message = "Great. Here is the visual representation of " + keywords[0].capitalize
+    # image = search_unsplash_for( keywords.join( ", ") )
+    # media = image
+    elsif body == "Cool. Thank you Freud."
+    message = "You are very welcome. I have saved logged this dream in " + session["name"] + "’s dream journal. You can always type “search: symbol” to read your past dreams related to this symbol. Is there anything else I can help you with today?"
+    elsif body == "Nope, that's it."
+    message = goodbye.sample.to_s
 
 
 #-------------------------------HOUSEKEEPING-----------------------------------#
     elsif body == "menu"
     message = "To start logging and analyzing your dream, type “I dreamt” followed by your dreams.
-    <br />
-    📖 To search a particular dream from your dream journal. Enter “search: + keywords”. (e.x: search: mother)
-    <br />
-    To learn more about about. enter “Freud”
-    <br />
-    To learn common dreams and what supposedly mean, enter “common”
-    <br />
-    To hear interesting facts about dreams, enter “facts"
+
+📖 To search a particular dream from your dream journal. Enter “search: + keywords”. (e.x: search: mother)
+
+To learn more about about. enter “Freud”
+
+To learn common dreams and what supposedly mean, enter “common”
+
+To hear interesting facts about dreams, enter “facts"
+
     elsif body == "facts"
     array_of_lines = IO.readlines("facts.txt")
     message = array_of_lines.sample.to_s
