@@ -267,13 +267,12 @@ get "/incoming/sms" do
 
 
   if message.class==Array
-    for i in message.size
-  twiml = Twilio::TwiML::MessagingResponse.new do |r|
+    twiml = Twilio::TwiML::MessagingResponse.new do |r|
     r.message do |m|
-
+    message.each_with_index do |element,i|
+      puts i
       # add the text of the response
       m.body(message[i])
-
       # add media if it is defined
       unless media.nil?
         m.media(media[i])
@@ -282,13 +281,10 @@ get "/incoming/sms" do
   end
   # increment the session counter
   session["counter"] += 1
-
-
-
   # send a response to twilio
+  end
   content_type 'text/xml'
   return twiml.to_s
-  end
   end
 
  end
