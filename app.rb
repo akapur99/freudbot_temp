@@ -1,12 +1,12 @@
 require 'sinatra'
 require "sinatra/reloader" if development?
-require 'sinatra/activerecord'
+#require 'sinatra/activerecord'
 require 'twilio-ruby'
 require 'json'
 # require 'facebook/messenger'
 require 'httparty'
 require 'unsplash'
-require 'twilio-ruby'
+#require 'twilio-ruby'
 
 
 configure :development do

@@ -12,14 +12,14 @@ gem 'emoji'
 gem 'httparty'
 gem 'json'
 
-gem 'dotenv', :groups => [:development, :test]
+#gem 'dotenv', :groups => [:development, :test]
 
 # gem 'ibm_watson'
 
 #Database
-gem 'activerecord'
-gem 'sinatra-activerecord'
-gem 'rake'
+#gem 'activerecord'
+#gem 'sinatra-activerecord'
+#gem 'rake'
 # gem 'pg'
 
 
