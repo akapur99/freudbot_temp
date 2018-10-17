@@ -147,8 +147,8 @@ array_of_lines.each do |line|
 
   if body.include?symbols.to_s
      message = items[1]
-  else
-     message= items[1]
+  #else
+  #   message= items[1]
   end
 
   end
