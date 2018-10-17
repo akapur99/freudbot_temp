@@ -206,7 +206,7 @@ Ready for your first dream interpretation? Type 👍 to begin; or “MENU” to 
 #----------------demo--------------#
    elsif body.include? "a lot of water"
    session[:dream]= body
-   message = "Water was a symbol in your dream. Is that correct?"
+   message = "Water was a symbol in your dream. Is that correct?" #identify symbol
    elsif body.include? "correct"
    message = "Great. Water represents your subconscious thoughts and emotions. Turbulent water may suggest you are feeling overwhelmed or you are in over your head emotionally or financially. Type 'image' to visualize your dream."
    elsif body == "image"
@@ -221,8 +221,7 @@ Ready for your first dream interpretation? Type 👍 to begin; or “MENU” to 
    elsif body.include? "pic" or body.include? "picture" or body.include? "photo"
    message = "I have logged this dream and image in " + session[:name].capitalize + "’s dream journal. You can always type “search: symbol” to read your past dreams related to this symbol. Is there anything else I can help you with today?
 
-To interpret another dream, try: I dreamt...
-Enter 'MENU' to get a list of things you can do."
+To interpret another dream, try: I dreamt..., or enter 'MENU' to get a list of things you can do."
 
 #You can always type “search: symbol” to read your past dreams related to this symbol.
    elsif body.include? "that's it" or body.include? "nope" or body.include? "goodbye" or body.include? "bye" or body.include? "ttyl"
