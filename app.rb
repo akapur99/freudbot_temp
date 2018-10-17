@@ -178,7 +178,7 @@ get "/incoming/sms" do
 #==============================ONBOARDING======================================#
    if session["counter"] == 1
    message = "Hello curious soul, my name is Freud. What's your name?"
-   elsif body.include? "jo"
+   elsif session["counter"] == 2
    session[:name]= body
    message = greetings.sample.to_s + session[:name].capitalize + ". I know you are one of those who seeks to deepen the knowledge about yourself.
 
