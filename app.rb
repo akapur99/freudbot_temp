@@ -218,9 +218,10 @@ Ready for your first dream interpretation? Type 👍 to begin; or “menu” to 
    message = "Great" + session[:symbol] + "represents/.........." + "Here is a visual representation of your dream"
    media = "https://unsplash.com/photos/sLAk1guBG90"
    elsif body.include? "pic" or body.include? "picture" or body.include? "photo"
-   message = "I have logged this dream and image in " + session[:name].capitalize + "’s dream journal. You can always type “search: symbol” to read your past dreams related to this symbol.
+   message = "I have logged this dream and image in " + session[:name].capitalize + "’s dream journal. You can always type “search: symbol” to read your past dreams related to this symbol. Is there anything else I can help you with today?
 
-Is there anything else I can help you with today? To interpret another dream, try: I dreamt... Enter 'MENU' to get a list of things you can do."
+To interpret another dream, try: I dreamt...
+Enter 'MENU' to get a list of things you can do."
 
 #You can always type “search: symbol” to read your past dreams related to this symbol.
    elsif body.include? "that's it" or body.include? "nope" or body.include? "goodbye" or body.include? "bye" or body.include? "ttyl"
