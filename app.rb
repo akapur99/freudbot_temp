@@ -256,7 +256,7 @@ Is there anything else I can help you with today? To interpret another dream, ty
 
 
 #-------------------------------HOUSEKEEPING-----------------------------------#
-    elsif body == "menu"
+    elsif body.include? "menu"
     message = "📖 To search a particular dream from your dream journal. Enter 'search: + keywords'. (e.x: search: mother).
 
 To learn more about Freud, enter 'Freud'.
