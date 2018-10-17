@@ -148,7 +148,7 @@ array_of_lines.each do |line|
   if body.include?symbols.to_s
      message = items[1]
   else
-     message= 'what are you bb?'
+     message= "Sorry, I didn't understand that. Try another symbol."
   end
 
   end
@@ -188,9 +188,9 @@ Dream is the small hidden door in the deepest and most intimate sanctum of our s
 How do I do that? Enter 🧐 to find out more. "
    # message.split('<br />')
 
-#======================FUTURE GREETINGS DOES NOT WORK!!!=======================#
-   # elsif body.nil?
-   # message = "👋 Hi welcome back! What did you dream of last night?"
+
+   elsif body.include? "hi" or body.include? "hey" or body.include? "freud" or body.include? "hello"
+   message = "👋 Hi welcome back! What did you dream of last night?"
 
 
    elsif body == "🧐"
@@ -225,9 +225,13 @@ Try sharing main symbols appeared in your dream. For example: “my mother”, �
    elsif body.include? "pic" or body.include? "picture" or body.include? "photo"
    message = "I have logged this dream in " + session[:name] + "’s dream journal.
 
-You can always type “search: symbol” to read your past dreams related to this symbol. Is there anything else I can help you with today?"
-   elsif body.include? "that's it"
+Is there anything else I can help you with today? Type 👍 for dream analyzing. 'menu' for a list of things you can do"
+
+#You can always type “search: symbol” to read your past dreams related to this symbol.
+   elsif body.include? "that's it" or body.include? "nope"
    message = goodbye.sample.to_s
+   elsif body.include? "thank you" or body.include? "thanks"
+   message = "My pleasure."
 
 #----------------API--------------#
    elsif body.include? "i dreamt of" or body.include? "in my dream"
@@ -261,7 +265,7 @@ You can always type “search: symbol” to read your past dreams related to thi
 
 #-------------------------------HOUSEKEEPING-----------------------------------#
     elsif body == "menu"
-    message = "To start logging and analyzing your dream, type 'I dreamt' followed by your dreams.
+    message = "To start logging and analyzing your dream, type '👍'.
 
 📖 To search a particular dream from your dream journal. Enter 'search: + keywords'. (e.x: search: mother)
 
