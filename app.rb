@@ -223,7 +223,7 @@ Try sharing main symbols appeared in your dream. For example: “my mother”, �
    message = "Great" + session[:symbol] + "represents/.........." + "Here is a visual representation of your dream"
    media = "https://unsplash.com/photos/sLAk1guBG90"
    elsif body.include? "pic" or body.include? "picture" or body.include? "photo"
-   message = "I have logged this dream in " + session[:name].capitalize + "’s dream journal.
+   message = "I have logged this dream in " + session[:name].capitalize + "’s dream journal. You can always type “search: symbol” to read your past dreams related to this symbol.
 
 Is there anything else I can help you with today? Type 👍 for dream analyzing, or 'menu' for a list of things you can do."
 
@@ -234,7 +234,7 @@ Is there anything else I can help you with today? Type 👍 for dream analyzing,
    message = "My pleasure."
 
 #----------------API--------------#
-   elsif body.include? "i dreamt of" or body.include? "in my dream"
+   elsif body.include? "i dreamt" or body.include? "in my dream"
       session[:dream] = body
       response = get_npl_for( body )
 
@@ -279,6 +279,8 @@ To hear interesting facts about dreams, enter 'facts'."
     elsif body == "common"
     array_of_lines = IO.readlines("common.txt")
     message = array_of_lines.sample.to_s
+    elsif body.include? "search: water"
+    message "There was a lot of water in my dream. I saw myself on a beach. The waves are turbulent."
     else
     message = "Sorry I didn't recognize that. Type 'menu' to get a list of options."
     end
