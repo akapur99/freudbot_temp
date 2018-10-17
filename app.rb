@@ -148,7 +148,7 @@ array_of_lines.each do |line|
   if body.include?symbols.to_s
      message = items[1]
   else
-     message= "Sorry, I didn't understand that. Try another symbol."
+     message= items[1]
   end
 
   end
@@ -200,9 +200,7 @@ Your dreams will be kept securely in your personal dream collection. As your dre
 Ready for your first dream interpretation? Type 👍 to begin; or “menu” to get a list of things you can do. "
 
    elsif body == '👍'
-   message = " Since we cannot act on our unconscious desires in our waking life, we can explore these feelings in dreams. However, we tend to do this in hidden, symbolic forms.
-
-Tell me about your dream last night. Try share main symbols appeared in your dream. For example: “mother”, “dark night”, etc. "
+   message = "Tell me about your dream last night. Try share main symbols appeared in your dream. For example: “mother”, “dark night”, etc. "
 
 #===============================DREAM ANALYZING================================#
 #----------------demo--------------#
