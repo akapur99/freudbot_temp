@@ -212,7 +212,7 @@ Try sharing main symbols appeared in your dream. For example: “my mother”, �
    elsif body.include? "water"
    message = "A large body of water is a symbol in your dream. Is that correct?"
    elsif body.include? "that's correct"
-   message = "Great, let's get started with interpretation of your dream. Water represents your subconscious thoughts and emotions. Type 'image' to visualize your dream."
+   message = "Great. Water represents your subconscious thoughts and emotions. Type 'image' to visualize your dream."
    elsif body == "image"
    message = "This is the visual representation of your dream."
    media = "https://images.unsplash.com/photo-1505142468610-359e7d316be0?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=689dc19dacb860a85a79530515114632&auto=format&fit=crop&w=562&q=80"
@@ -220,10 +220,10 @@ Try sharing main symbols appeared in your dream. For example: “my mother”, �
    message = "Sorry, let’s try again. I identified that you mentioned" + "sea" + "and" + "beach" + "as key symbols in your dream, type in a symbol to see its interpretation."
    elsif body == "large body of water"
    session[:symbol]= body
-   message = "Great, let's get started with interpretation of your dream." + session[:symbol] + "represents/.........." + "Here is a visual representation of your dream"
+   message = "Great" + session[:symbol] + "represents/.........." + "Here is a visual representation of your dream"
    media = "https://unsplash.com/photos/sLAk1guBG90"
-   elsif body.include? "thank you"
-   message = "You are very welcome. I have saved logged this dream in " + session[:name] + "’s dream journal.
+   elsif body.include? "pic" or body.include? "picture" or body.include? "photo"
+   message = "I have logged this dream in " + session[:name] + "’s dream journal.
 
 You can always type “search: symbol” to read your past dreams related to this symbol. Is there anything else I can help you with today?"
    elsif body.include? "that's it"
