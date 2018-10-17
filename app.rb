@@ -223,12 +223,12 @@ Try sharing main symbols appeared in your dream. For example: “my mother”, �
    message = "Great" + session[:symbol] + "represents/.........." + "Here is a visual representation of your dream"
    media = "https://unsplash.com/photos/sLAk1guBG90"
    elsif body.include? "pic" or body.include? "picture" or body.include? "photo"
-   message = "I have logged this dream in " + session[:name] + "’s dream journal.
+   message = "I have logged this dream in " + session[:name].capitalize + "’s dream journal.
 
-Is there anything else I can help you with today? Type 👍 for dream analyzing. 'menu' for a list of things you can do"
+Is there anything else I can help you with today? Type 👍 for dream analyzing, or 'menu' for a list of things you can do."
 
 #You can always type “search: symbol” to read your past dreams related to this symbol.
-   elsif body.include? "that's it" or body.include? "nope"
+   elsif body.include? "that's it" or body.include? "nope" or body.include? "goodbye" or body.include? "bye" or body.include? "ttyl"
    message = goodbye.sample.to_s
    elsif body.include? "thank you" or body.include? "thanks"
    message = "My pleasure."
@@ -265,15 +265,13 @@ Is there anything else I can help you with today? Type 👍 for dream analyzing.
 
 #-------------------------------HOUSEKEEPING-----------------------------------#
     elsif body == "menu"
-    message = "To start logging and analyzing your dream, type '👍'.
+    message = "📖 To search a particular dream from your dream journal. Enter 'search: + keywords'. (e.x: search: mother).
 
-📖 To search a particular dream from your dream journal. Enter 'search: + keywords'. (e.x: search: mother)
+To learn more about Freud, enter 'Freud'.
 
-To learn more about about. enter 'Freud'
+To learn common dreams and what supposedly mean, enter 'common'.
 
-To learn common dreams and what supposedly mean, enter 'common'
-
-To hear interesting facts about dreams, enter 'facts'"
+To hear interesting facts about dreams, enter 'facts'."
 
     elsif body == "facts"
     array_of_lines = IO.readlines("facts.txt")
