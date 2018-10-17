@@ -197,7 +197,7 @@ How do I do that? Enter 🧐 to find out more. "
 
 Your dreams will be kept securely in your personal dream collection. As your dream journal grows you can look back not just at your thoughts and feelings but spot patterns that will help you on your journey of self-discovery.
 
-Ready for your first dream interpretation? Type 👍 to begin; or “menu” to get a list of things you can do. "
+Ready for your first dream interpretation? Type 👍 to begin; or “MENU” to get a list of things you can do. "
 
    elsif body == '👍'
    message = "Tell me about your dream last night. Try share main symbols appeared in your dream. For example: “mother”, “dark night”, etc. "
@@ -205,6 +205,7 @@ Ready for your first dream interpretation? Type 👍 to begin; or “menu” to 
 #===============================DREAM ANALYZING================================#
 #----------------demo--------------#
    elsif body.include? "a lot of water"
+   session[:dream]= body
    message = "Water was a symbol in your dream. Is that correct?"
    elsif body.include? "correct"
    message = "Great. Water represents your subconscious thoughts and emotions. Type 'image' to visualize your dream."
@@ -273,7 +274,7 @@ To hear interesting facts about dreams, enter 'FACT'."
     array_of_lines = IO.readlines("common.txt")
     message = array_of_lines.sample.to_s
     elsif body== "search: water"
-    message = "There was a lot of water in my dream. I saw myself on a beach. The waves were turbulent."
+    message = session[:dream]
     media = "https://images.unsplash.com/photo-1505142468610-359e7d316be0?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=689dc19dacb860a85a79530515114632&auto=format&fit=crop&w=562&q=80"
     else
     array_of_lines = IO.readlines("error.txt")
