@@ -206,7 +206,7 @@ Ready for your first dream interpretation? Type 👍 to begin; or “menu” to 
 #----------------demo--------------#
    elsif body.include? "a lot of water"
    message = "Water was a symbol in your dream. Is that correct?"
-   elsif body.include? "that's correct"
+   elsif body.include? "correct"
    message = "Great. Water represents your subconscious thoughts and emotions. Type 'image' to visualize your dream."
    elsif body == "image"
    message = "This is the visual representation of your dream."
