@@ -29,3 +29,4 @@ car=Vehicles may reflect how much control you feel you have over your life - for
 food=Food is said to symbolize knowledge, because it nourishes the body just as information nourishes the brain. However, it could just be food.
 being chased=Being chased is one of the most common dream symbols in all cultures. It means you're feeling threatened, so reflect on who's chasing you (they may be symbolic) and why they're a possible threat in real life.
 mom=Seeing your mother in your dreams is a big representation of your internal guidance. It means that you should have the ability to make better decisions with positive effects in your future.
+mother=Seeing your mother in your dreams is a big representation of your internal guidance. It means that you should have the ability to make better decisions with positive effects in your future.
