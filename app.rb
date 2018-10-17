@@ -188,7 +188,7 @@ How do I do that? Enter 🧐 to find out more. "
    # message.split('<br />')
 
 
-   elsif body.include? "hi" or body.include? "hey" or body.include? "hello"
+   elsif body.include? "hi Freud" or body.include? "hey Freud" or body.include? "hello Freud"
    message = "👋 Hi welcome back! What did you dream of last night?"
 
 
