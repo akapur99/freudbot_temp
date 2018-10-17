@@ -159,7 +159,7 @@ end
 
 greetings = ["Hello ", "Hey ","Hi "]
 goodbye = ["Alright. Happy dreaming! I will talk to you later.", "Hope this was helpful. Have a great day!"]
-
+thankyou_response = ["My pleasure.", "Absolutely", "You are very welcome.", "Of course :)"]
 
 get "/incoming/sms" do
 
@@ -220,13 +220,13 @@ Ready for your first dream interpretation? Type 👍 to begin; or “menu” to 
    elsif body.include? "pic" or body.include? "picture" or body.include? "photo"
    message = "I have logged this dream and image in " + session[:name].capitalize + "’s dream journal. You can always type “search: symbol” to read your past dreams related to this symbol.
 
-Is there anything else I can help you with today? To interpret another dream, type 'I dreamt...', or enter 'menu' to get a list of things you can do."
+Is there anything else I can help you with today? To interpret another dream, try: I dreamt... Enter 'MENU' to get a list of things you can do."
 
 #You can always type “search: symbol” to read your past dreams related to this symbol.
    elsif body.include? "that's it" or body.include? "nope" or body.include? "goodbye" or body.include? "bye" or body.include? "ttyl"
    message = goodbye.sample.to_s
    elsif body.include? "thank you" or body.include? "thanks"
-   message = "My pleasure."
+   message = thankyou_response.sample.to_s
 
 #----------------API--------------#
       elsif body.include? "i dreamt"
@@ -259,11 +259,11 @@ Is there anything else I can help you with today? To interpret another dream, ty
     elsif body.include? "menu"
     message = "📖 To search a particular dream from your dream journal. Enter 'search: + keywords'. (e.x: search: mother).
 
-To learn more about Freud, enter 'Freud'.
+To learn more about Freud, enter 'FREUD'.
 
-To learn common dreams and what supposedly mean, enter 'common'.
+To learn common dreams and what supposedly mean, enter 'COMMON'.
 
-To hear interesting facts about dreams, enter 'facts'."
+To hear interesting facts about dreams, enter 'FACT'."
 
     elsif body.include? "fact"
     array_of_lines = IO.readlines("facts.txt")
