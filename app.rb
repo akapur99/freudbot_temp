@@ -161,7 +161,6 @@ greetings = ["Hello ", "Hey ","Hi "]
 goodbye = ["Alright. Happy dreaming! I will talk to you later.", "Hope this was helpful. Have a great day!"]
 
 
-
 get "/incoming/sms" do
 
   session["last_intent"] ||= nil
@@ -225,7 +224,7 @@ Try sharing main symbols appeared in your dream. For example: “my mother”, �
    elsif body.include? "pic" or body.include? "picture" or body.include? "photo"
    message = "I have logged this dream and image in " + session[:name].capitalize + "’s dream journal. You can always type “search: symbol” to read your past dreams related to this symbol.
 
-Is there anything else I can help you with today? To try another dream, try 'I dreamt...'. Type 'menu' to get a list of things you can do."
+Is there anything else I can help you with today? To interpret another dream, type 'I dreamt...', or enter 'menu' to get a list of things you can do."
 
 #You can always type “search: symbol” to read your past dreams related to this symbol.
    elsif body.include? "that's it" or body.include? "nope" or body.include? "goodbye" or body.include? "bye" or body.include? "ttyl"
@@ -280,7 +279,8 @@ To hear interesting facts about dreams, enter 'facts'."
     message = "There was a lot of water in my dream. I saw myself on a beach. The waves were turbulent."
     media = "https://images.unsplash.com/photo-1505142468610-359e7d316be0?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=689dc19dacb860a85a79530515114632&auto=format&fit=crop&w=562&q=80"
     else
-    message = "Sorry I didn't recognize that. Type 'menu' to get a list of options."
+    array_of_lines = IO.readlines("error.txt")
+    message = array_of_lines.sample.to_s
     end
 
 #Test
