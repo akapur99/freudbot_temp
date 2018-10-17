@@ -208,7 +208,7 @@ Ready for your first dream interpretation? Type 👍 to begin; or “MENU” to 
    session[:dream]= body
    message = "Water was a symbol in your dream. Is that correct?"
    elsif body.include? "correct"
-   message = "Great. Water represents your subconscious thoughts and emotions. Type 'image' to visualize your dream."
+   message = "Great. Water represents your subconscious thoughts and emotions. Turbulent water may suggest you are feeling overwhelmed or you are in over your head emotionally or financially. Type 'image' to visualize your dream."
    elsif body == "image"
    message = "This is the visual representation of your dream."
    media = "https://images.unsplash.com/photo-1505142468610-359e7d316be0?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=689dc19dacb860a85a79530515114632&auto=format&fit=crop&w=562&q=80"
