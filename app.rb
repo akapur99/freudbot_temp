@@ -49,7 +49,7 @@ def get_keywords_from_response resp
 
 
   keywords = []
-
+  puts resp
   resp["keywords"].each do |kw|
     keywords << kw["text"]
   end
@@ -133,12 +133,33 @@ def search_unsplash_for response
   images
 end
 
-# get '/incoming/sms' do
-#   "Hello World"
-# end
+
+def search_answer_for body
+message = " "
+array_of_lines = IO.readlines("symbols.txt")
+array_of_lines.each do |line|
+
+  items=[ ]
+  items=line.split ("=")
+  symbols=items[0]
+  answers=items[1]
+
+
+  if body.include?symbols.to_s
+     message = items[1]
+  else
+     message= 'what are you bb?'
+  end
+
+  end
+
+  return message.to_s
+end
+
 
 greetings = ["Hello ", "Hey ","Hi "]
-goodbye = ["<h1>Great. Happy dreaming! I will talk to you later.", "<h1>Awesome, hope it's helpful. Have a great day!"]
+goodbye = ["Great. Happy dreaming! I will talk to you later.", "Awesome, hope it's helpful. Have a great day!"]
+
 
 
 get "/incoming/sms" do
@@ -152,6 +173,7 @@ get "/incoming/sms" do
   body = body.downcase.strip
   message = " "
   media = nil
+
 # thank_you = ["ddd"]
 # message=thank_you.sample.to_s
 #==============================ONBOARDING======================================#
@@ -192,7 +214,7 @@ Try sharing main symbols appeared in your dream. For example: “my mother”, �
    elsif body.include? "that's correct"
    message = "Great, let's get started with interpretation of your dream. Water represents your subconscious thoughts and emotions. Type 'image' to visualize your dream."
    elsif body == "image"
-   message = "Here is the visual representation of your dream:"
+   message = "This is the visual representation of your dream."
    media = "https://images.unsplash.com/photo-1505142468610-359e7d316be0?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=689dc19dacb860a85a79530515114632&auto=format&fit=crop&w=562&q=80"
    elsif body.include? "not correct"
    message = "Sorry, let’s try again. I identified that you mentioned" + "sea" + "and" + "beach" + "as key symbols in your dream, type in a symbol to see its interpretation."
@@ -203,27 +225,34 @@ Try sharing main symbols appeared in your dream. For example: “my mother”, �
    elsif body.include? "thank you"
    message = "You are very welcome. I have saved logged this dream in " + session[:name] + "’s dream journal.
 
-   You can always type “search: symbol” to read your past dreams related to this symbol. Is there anything else I can help you with today?"
+You can always type “search: symbol” to read your past dreams related to this symbol. Is there anything else I can help you with today?"
    elsif body.include? "that's it"
    message = goodbye.sample.to_s
 
 #----------------API--------------#
    elsif body.include? "i dreamt of" or body.include? "in my dream"
-
+      session[:dream] = body
       response = get_npl_for( body )
 
       keywords = get_keywords_from_response( response )
       puts keywords
+      answer = search_answer_for (keywords[0])
       image = search_unsplash_for( keywords.join( ", ") )
       media = image
-      message = keywords[0].capitalize + " is a symbol in your dream. Here is an image to visualize it."
+      message = keywords[0].capitalize + " is a symbol in your dream. " + answer
 
     # elsif body == "yep"
+    #   response = get_npl_for( body )
+    #   puts response
+    #   keywords = get_keywords_from_response( response )
+    #   puts keywords
+    #
     # # message = "Great, let's get started with interpretation of your dream." + keywords[0].capitalize + "represents..... Type 'image' to visualize your dream."
     # # elsif body == "image"
-    # message = "Great. Here is the visual representation of " + keywords[0].capitalize
+    #
     # image = search_unsplash_for( keywords.join( ", ") )
     # media = image
+    # message = "Great. Here is the visual representation of " + session[:dream]
     elsif body == "Cool. Thank you Freud."
     message = "You are very welcome. I have saved logged this dream in " + session["name"] + "’s dream journal. You can always type “search: symbol” to read your past dreams related to this symbol. Is there anything else I can help you with today?"
     elsif body == "Nope, that's it."
@@ -232,15 +261,15 @@ Try sharing main symbols appeared in your dream. For example: “my mother”, �
 
 #-------------------------------HOUSEKEEPING-----------------------------------#
     elsif body == "menu"
-    message = "To start logging and analyzing your dream, type “I dreamt” followed by your dreams.
+    message = "To start logging and analyzing your dream, type 'I dreamt' followed by your dreams.
 
-📖 To search a particular dream from your dream journal. Enter “search: + keywords”. (e.x: search: mother)
+📖 To search a particular dream from your dream journal. Enter 'search: + keywords'. (e.x: search: mother)
 
-To learn more about about. enter “Freud”
+To learn more about about. enter 'Freud'
 
-To learn common dreams and what supposedly mean, enter “common”
+To learn common dreams and what supposedly mean, enter 'common'
 
-To hear interesting facts about dreams, enter “facts"
+To hear interesting facts about dreams, enter 'facts'"
 
     elsif body == "facts"
     array_of_lines = IO.readlines("facts.txt")
